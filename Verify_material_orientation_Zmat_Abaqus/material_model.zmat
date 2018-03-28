@@ -1,0 +1,13 @@
+***material
+  *rotation [ 0.70710678  0.70710678  0.        ] [-0.70710678  0.70710678  0.        ] [ 0. -0.  1.]
+***integration theta_method_a 1. 1.e-6 500
+***behavior gen_evp auto_step
+ **elasticity cubic
+   y1111 197000.0
+   y1122 125000.0
+   y1212 90000.0
+***stepping_controls
+  *full_step_jacobian
+  *divergence 2.0 20
+  *security   1.5
+***return
