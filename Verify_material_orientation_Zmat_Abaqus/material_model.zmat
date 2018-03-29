@@ -4,7 +4,7 @@
 ***behavior gen_evp auto_step
  **elasticity cubic
    y1111 197000.0
-   y1122 125000.0
+   y1122 144000.0
    y1212 90000.0
 ***stepping_controls
   *full_step_jacobian

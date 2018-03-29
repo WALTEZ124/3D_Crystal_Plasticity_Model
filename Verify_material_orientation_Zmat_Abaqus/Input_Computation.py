@@ -157,13 +157,7 @@ class Plastic():
 srcFile = os.path.join(compSrc, 'moveFiles_func.py')
 execfile(srcFile)
 
-srcFile = os.path.join(compSrc,'Material_Config.py')
-execfile(srcFile)
-
 srcFile = os.path.join(compSrc,'Compute.py')
-execfile(srcFile)
-
-srcFile = os.path.join(compSrc,'Random_EL_Compute.py')
 execfile(srcFile)
 
 srcFile = os.path.join(compSrc,'Generate_names.py')

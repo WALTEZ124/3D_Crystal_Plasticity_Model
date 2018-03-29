@@ -1,13 +1,15 @@
 #!/bin/bash
 
-##  Generate INP File
 
+## Input material orientation
 hkl_list=(1 1 0)
 uvw_list=(1 -1 0)
 
+## Modify the Input File (for file names)
 sed -i '' "s/hkl =.*/hkl = np.asarray([ ${hkl_list[0]}, ${hkl_list[1]}, ${hkl_list[2]}])/" Input_Computation.py
 sed -i '' "s/uvw =.*/uvw = np.asarray([ ${uvw_list[0]}, ${uvw_list[1]}, ${uvw_list[2]}])/" Input_Computation.py
 
+## Transformation from Miller Indices to Zmat orientation
 Vectors=$(python <<< "
 import numpy as np ;
 hkl = np.asarray([ ${hkl_list[0]}, ${hkl_list[1]}, ${hkl_list[2]}]); 
@@ -26,16 +28,27 @@ print( NormalAxis, PrimaryAxis, t3) ;" )
 
 echo ${Vectors}
 
+## Up-date the material orientation in the Zmat file
 sed -i '' "s/rotation.*/rotation ${Vectors}/" material_model.zmat
 
-abaqus_6.11-2 cae noGUI=Main.py
+## Generate INP File
+abaqus_6.11-2 cae noGUI=../Code/Verify_material_orientation_Zmat_Abaqus/Create_INP_file.py
 
-find . -name '*.inp' -cmin -1 > JobName
+## Import JobName and sources' path from previous computation
+JobName=$(sed -n 1p last_job_file.txt)
+OdbSrc=$(sed -n 2p last_job_file.txt)
+OdbSrcEL=$(sed -n 3p last_job_file.txt)
+OdbSrcLGEOM=$(sed -n 4p last_job_file.txt)
 
-sed '' 's/material=Elastic-Plastic/material_model_Elastic_Plastic.zmat/' ${JobName}
+#find . -name '*.inp' -cmin -1 > JobName
 
-sed '' 's/material=Elastic/material_model_Elastic.zmat/' ${JobName}
+## Insert the Zmat material configuration in the inp file
+sed '' 's/material=Elastic-Plastic/material_model_Elastic_Plastic.zmat/' ${JobName}.inp
+sed '' 's/material=Elastic/material_model_Elastic.zmat/' ${JobName}.inp
 
+## Launch Job on Zmat
+#zmat ${JobName}.inp
 
-#zmat JobName
+## Move files
+#mv ${JobName}.* ${OdbSrcEL}
 
