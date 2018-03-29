@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 ## Input material orientation
 hkl_list=(1 1 0)
 uvw_list=(1 -1 0)
@@ -32,7 +31,7 @@ echo ${Vectors}
 sed -i '' "s/rotation.*/rotation ${Vectors}/" material_model.zmat
 
 ## Generate INP File
-abaqus_6.11-2 cae noGUI=../Code/Verify_material_orientation_Zmat_Abaqus/Create_INP_file.py
+abaqus_6.11-2 cae noGUI=Create_INP_file.py
 
 ## Import JobName and sources' path from previous computation
 JobName=$(sed -n 1p last_job_file.txt)

@@ -20,17 +20,11 @@ executeOnCaeStartup()
 #          Management of source and output folders 
 #---------------------------------------------------------------------------------
 
-codeSrc = os.path.join('..','..','Code','Reference_Fields')
+#codeSrc = os.path.join('..','..','Code','Verify_material_orientation_Zmat_Abaqus')
+codeSrc = '.'
 odbDir = 'Results_Odb'
 compSrc = os.path.join(codeSrc,'src_Computation')
 
-#for mat_or in [[[0,0,0],[0,0,0]],[[0,1,0],[1,0,0]],[[1,1,0],[1,-1,0]],[[1,1,0],[0,0,1]],[[1,1,0],[1,-1,1]],[[1,2,1],[3,-1,-1]]]:
-#	if mat_or[0]==[0,0,0]:
-#		elasticity_type = 'isotropic'
-#	else :
-#		elasticity_type = 'orthotropic'
-#		hkl = np.asarray(mat_or[0])
-#		uvw = np.asarray(mat_or[1])
 
 execfile(os.path.join(codeSrc,'Input_Computation.py'))	
 elastic = Elastic( eType = elasticity_type)
