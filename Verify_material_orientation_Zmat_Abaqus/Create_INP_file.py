@@ -72,9 +72,6 @@ elastic = Elastic( eType = elasticity_type)
 plastic = Plastic( pType = 'none')
 
 
-mdb = Material_Config(mdb, 'Model-1', elastic, plastic)
-
-
 file2=open(os.path.join(compSrc, 'Parameters_F_To_K_nominals_%s.p' %  suffix ),'rb')
 Param = pickle.load(file2)
 file2.close()
@@ -86,7 +83,8 @@ plastic = Plastic( pType = 'none')
 
 ELTest_I 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [1.], 
 				'KII_range' : [0.], 'KIII_range' : [0.], 'NLGEOM': False }
-EL_Norm_JobName_I = compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
+
+EL_Norm_JobName_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
 
 file2=open('last_job_file.txt','w') 
 file2.write('%s \n' % EL_Norm_JobName_I) 

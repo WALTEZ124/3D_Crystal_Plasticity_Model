@@ -390,7 +390,7 @@ mdb.models['Model-1'].materials['Elastic'].Elastic(table=((1.0, 1.0), ))
 mdb.models['Model-1'].materials['Elastic-Plastic'].Elastic(table=((1.0, 1.0), ))
 mdb.models['Model-1'].materials['Elastic-Plastic'].Plastic(hardening=COMBINED, dataType=PARAMETERS, table=((1.0, 1.0, 1.0), ))
 mdb.models['Model-1'].materials['Elastic-Plastic'].plastic.CyclicHardening(parameters=ON, table=((1.0, 1.0, 1.0), ))
-mdb.models['Model-1'].materials['Elastic-Rigid'].Elastic(table=((1.0, 1.0), ))
+mdb.models['Model-1'].materials['Elastic-Rigid'].Elastic(table=((10000000.0, .3), ))
 
 
 ###########################
