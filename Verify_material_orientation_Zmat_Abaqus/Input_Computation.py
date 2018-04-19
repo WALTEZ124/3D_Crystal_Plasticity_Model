@@ -25,8 +25,8 @@ dimensions.time_inc = 0.1
 #          Material
 ############################
 
-elasticity_type = 'isotropic'
-#elasticity_type = 'orthotropic'
+#elasticity_type = 'isotropic'
+elasticity_type = 'orthotropic'
 
 #hardening_type_list = ['linear-isotropic-hardening','linear-kinematic-hardening','nonlinear-kinematic-hardening','nonlinear-combined-hardening']
 
@@ -36,8 +36,8 @@ hardening_type = 'nonlinear-combined-hardening'
 if elasticity_type == 'orthotropic' :
 	#-------------------------------------
 	# Miller indices: Input variables
-	hkl = np.asarray([ 0, 1, 1])
-	uvw = np.asarray([ 1, 0, 0])
+	hkl = np.asarray([ 1, 2, 1])
+	uvw = np.asarray([ 3, -1, -1])
 	#-------------------------------------
 	qrs = np.cross(hkl, uvw)
 	Nhkl = np.linalg.norm(hkl)
@@ -124,8 +124,8 @@ class Elastic():
 		self.ElasticRigidValue = (EYoung_Rigid,nuPoisson)
 		if self.eType == 'orthotropic':
 			self.ElasticValue = (C11,C12,C11,C12,C12,C11,C44,C44,C44)
-			self.hkl = np.asarray([ 1, 1, 0])
-			self.uvw = np.asarray([ 1, -1, 0])
+			self.hkl = hkl.tolist()
+			self.uvw = uvw.tolist()
 			self.NormalAxis  = NormalAxis.tolist()
 			self.PrimaryAxis = PrimaryAxis.tolist()
 			self.AdditionalRotationAngle = AdditionalRotationAngle

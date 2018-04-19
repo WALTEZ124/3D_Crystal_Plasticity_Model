@@ -87,9 +87,9 @@ ELTest_I 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [1
 EL_Norm_JobName_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
 
 file2=open('last_job_file.txt','w') 
-file2.write('%s \n' % EL_Norm_JobName_I) 
-file2.write('%s \n' % odbSrc) 
-file2.write('%s \n' % odbSrcEL ) 
-file2.write('%s \n' % odbSrcLGEOM ) 
+file2.write('%s\n' % EL_Norm_JobName_I) 
+file2.write('%s\n' % odbSrc) 
+file2.write('%s\n' % odbSrcEL ) 
+file2.write('%s\n' % odbSrcLGEOM ) 
 file2.close()
 

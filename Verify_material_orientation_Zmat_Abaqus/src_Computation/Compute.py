@@ -61,10 +61,10 @@ def Compute(mdb, test, job, Param, elastic, odbSrc):
 		step = 'Step-%d' %stp
 		mdb.models['Model-1'].steps[step].suppress()
 	#: Crach history output for SIF determination
-	if name == 'EL_Norm':
-		mdb.models['Model-1'].historyOutputRequests['CRACK-RIGHT-SIF'].resume()
-	else :
-		mdb.models['Model-1'].historyOutputRequests['CRACK-RIGHT-SIF'].suppress()
+	#if name == 'EL_Norm':
+	#	mdb.models['Model-1'].historyOutputRequests['CRACK-RIGHT-SIF'].resume()
+	#else :
+	#	mdb.models['Model-1'].historyOutputRequests['CRACK-RIGHT-SIF'].suppress()
 	mdb.models['Model-1'].historyOutputRequests['LINE-DISP-RIGHT'].suppress()
 	mdb.models['Model-1'].historyOutputRequests['FIELD-DISP-RIGHT'].suppress()
 	mdb.models['Model-1'].historyOutputRequests['FACES-DISP-RIGHT'].suppress()
@@ -79,7 +79,7 @@ def Compute(mdb, test, job, Param, elastic, odbSrc):
 		memoryUnits=PERCENTAGE, getMemoryFromAnalysis=True, 
 		explicitPrecision=SINGLE, nodalOutputPrecision=SINGLE, echoPrint=OFF, 
 		modelPrint=OFF, contactPrint=OFF, historyPrint=OFF, userSubroutine='', 
-		scratch='', multiprocessingMode=DEFAULT, numCpus=16, numDomains=16)
+		scratch='', multiprocessingMode=DEFAULT, numCpus=4, numDomains=4)
 	#: Cree le fichier .inp
 	mdb.jobs[jobName].writeInput()
 	print '#: INP file generated'

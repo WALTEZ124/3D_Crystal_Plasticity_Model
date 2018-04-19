@@ -1,11 +1,16 @@
 ***material
-  *rotation x1 1.000000 0.000000 0.000000 x2 0.000000 0.707107 -0.707107
+  *rotation -19.286325 65.905157 26.565051
 ***integration theta_method_a 1. 1.e-6 500
 ***behavior gen_evp auto_step
  **elasticity cubic
    y1111 197000.0
    y1122 144000.0
    y1212 90000.0
+**potential octahedral ev
+ *isotropic nonlinear  R0 40. b 2. Q 1.
+ *kinematic nonlinear
+  C 1.0
+  D 1.0
 ***stepping_controls
   *full_step_jacobian
   *divergence 2.0 20

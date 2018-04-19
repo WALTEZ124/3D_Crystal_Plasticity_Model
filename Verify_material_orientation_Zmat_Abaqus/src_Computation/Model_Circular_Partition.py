@@ -576,20 +576,17 @@ mdb.models['Model-1'].fieldOutputRequests['F-Output-1'].suppress()
 
 regionDef=mdb.models['Model-1'].rootAssembly.sets['FIELD-RIGHT']
 mdb.models['Model-1'].FieldOutputRequest(name='FIELD-DISP-RIGHT',createStepName='Step-1',
-    variables=('CDISP', 'CF', 'COORD', 'U', 'CSTRESS', 'LE', 'MISES', 'PE', 'PEEQ', 
-    'PEMAG','RF', 'S'), timeInterval=dimensions.time_inc, region=regionDef,
+    variables=('COORD', 'U','MISES', 'PE', 'PEEQ', 'S'), timeInterval=dimensions.time_inc, region=regionDef,
     sectionPoints=DEFAULT, rebar=EXCLUDE)
 
 regionDef=mdb.models['Model-1'].rootAssembly.sets['LINE-RIGHT']
 mdb.models['Model-1'].FieldOutputRequest(name='LINE-DISP-RIGHT',createStepName='Step-1',
-    variables=('CDISP', 'CF', 'COORD', 'U', 'CSTRESS', 'LE', 'MISES', 'PE', 'PEEQ', 
-    'PEMAG','RF', 'S'), timeInterval=dimensions.time_inc, region=regionDef,
+    variables=('COORD', 'U',  'MISES', 'PE', 'PEEQ', 'S'), timeInterval=dimensions.time_inc, region=regionDef,
     sectionPoints=DEFAULT, rebar=EXCLUDE)
 
-regionDef=mdb.models['Model-1'].rootAssembly.sets['LIPS-RIGHT']
-mdb.models['Model-1'].FieldOutputRequest(name='LIPS-DISP-RIGHT',createStepName='Step-1',
-    variables=('CDISP', 'CF', 'COORD', 'U', 'CSTRESS', 'LE', 'MISES', 'PE', 'PEEQ', 
-    'PEMAG','RF', 'S'), timeInterval=dimensions.time_inc, region=regionDef,
+regionDef=mdb.models['Model-1'].rootAssembly.sets['FACES-RIGHT']
+mdb.models['Model-1'].FieldOutputRequest(name='FACES-DISP-RIGHT',createStepName='Step-1',
+    variables=( 'COORD', 'U', 'MISES', 'PE', 'PEEQ','S'), timeInterval=dimensions.time_inc, region=regionDef,
     sectionPoints=DEFAULT, rebar=EXCLUDE)
 
 mdb.models['Model-1'].FieldOutputRequest(name='WHOLE_MODEL',
@@ -1017,9 +1014,12 @@ a.seedEdgeByNumber(edges=pickedEdges, number=3, constraint=FIXED)
 
 # Elements control
 
-elemType1 = mesh.ElemType(elemCode=C3D8R, elemLibrary=STANDARD, 
-    kinematicSplit=AVERAGE_STRAIN, secondOrderAccuracy=OFF, 
-    hourglassControl=DEFAULT, distortionControl=DEFAULT)
+#elemType1 = mesh.ElemType(elemCode=C3D8R, elemLibrary=STANDARD, 
+#    kinematicSplit=AVERAGE_STRAIN, secondOrderAccuracy=OFF, 
+#    hourglassControl=DEFAULT, distortionControl=DEFAULT)
+
+elemType1 = mesh.ElemType(elemCode=C3D8, elemLibrary=STANDARD, 
+    secondOrderAccuracy=OFF, distortionControl=DEFAULT)
 elemType2 = mesh.ElemType(elemCode=C3D6, elemLibrary=STANDARD, 
     secondOrderAccuracy=OFF, distortionControl=DEFAULT)
 elemType3 = mesh.ElemType(elemCode=C3D4, elemLibrary=STANDARD, 
@@ -1028,7 +1028,7 @@ elemType3 = mesh.ElemType(elemCode=C3D4, elemLibrary=STANDARD,
 
 a = mdb.models['Model-1'].rootAssembly
 c1 = a.instances['Part-1-1'].cells
-pickedRegions = c1.findAt(  ((9.99, 0.01, 0.0), ), ((9.99, -0.01, 0.0), ), ((10.01, 0.01, 0.0), ), ((10.01, -0.01, 0.0), ), ((9.99, 0.01, 0.1), ), ((9.99, -0.01, 0.1), ), ((10.01, 0.01, 0.1), ), ((10.01, -0.01, 0.1), ) )
+pickedRegions = c1.findAt(  ((9.99, 0.01, 0.0), ), ((9.99, -0.01, 0.0), ), ((10.01, 0.01, 0.0), ), ((10.01, -0.01, 0.0), ), ((9.99, 0.01, 0.1), ), ((9.99, -0.01, 0.1), ), ((10.01, 0.01, 0.1), ), ((10.01, -0.01, 0.1), ), ((-9.99, 0.01, 0.0), ), ((-9.99, -0.01, 0.0), ), ((-10.01, 0.01, 0.0), ), ((-10.01, -0.01, 0.0), ), ((-9.99, 0.01, 0.1), ), ((-9.99, -0.01, 0.1), ), ((-10.01, 0.01, 0.1), ), ((-10.01, -0.01, 0.1), ) )
 pickedRegions_Type =(pickedRegions, )
 a.setElementType(regions=pickedRegions_Type, elemTypes=(elemType1, elemType2, elemType3))
 a.setMeshControls(regions=pickedRegions, elemShape=HEX, technique=STRUCTURED)
