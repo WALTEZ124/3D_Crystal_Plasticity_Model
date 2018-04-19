@@ -99,7 +99,8 @@ sed -i "${insertion_line}i **here" $JobName
 begin="**here"
 end="*Material, name=Elastic-Rigid"
 
-sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.txt}; /$end/p; d}" $JobName
+sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.inp
+	}; /$end/p; d}" $JobName
 sed -i '/**here/d' $JobName
 
 ## Launch Job on Zmat
@@ -107,7 +108,7 @@ sed -i '/**here/d' $JobName
 # To configurate Zebulon with abaqus_6.11-2
 #source ~zebulon/Z8.7/do_config.sh 
 
-#Zmat cpus=4 memory=16gb $JobName
+Zmat cpus=4 memory=16gb $JobName
 
 
 

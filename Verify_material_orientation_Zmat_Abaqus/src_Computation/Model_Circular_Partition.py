@@ -557,7 +557,7 @@ Elastic_Plastic_region = a.sets['Elastic-Plastic_Region']
 mdb.models['Model-1'].HomogeneousSolidSection(material='Elastic-Plastic', name='Section_Elastic-Plastic', thickness=None)
 #mdb.models[Model].PEGSection(name='Section_Elastic-Plastic', material='Elastic-Plastic', thickness=1.0, wedgeAngle1=0.0, wedgeAngle2=0.0)
 a.SectionAssignment(offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=Elastic_Plastic_region , sectionName='Section_Elastic-Plastic', thicknessAssignment=FROM_SECTION)
-a.SectionAssignment(offset=0.0, offsetField='', offsetType=MIDDLE_SURFACE, region=Elastic_region , sectionName='Section_Elastic-Plastic', thicknessAssignment=FROM_SECTION)  # to test with a full model elastic-plastic
+
 
 
 #####################################
