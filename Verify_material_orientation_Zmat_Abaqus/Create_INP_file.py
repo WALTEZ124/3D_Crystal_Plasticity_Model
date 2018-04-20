@@ -62,11 +62,6 @@ n_tot_steps = 3
 EL_Job      = { 'n_tot_steps' : n_tot_steps, 'n_act_steps' : 1 , 'time_steps' : [  1 ] ,
 				'max_num_inc': 100, 'ini_inc' : 1.0 , 'min_inc' : 1e-3, 'max_inc' : 1 }
 
-PL_Mon_Job  = { 'n_tot_steps' : n_tot_steps, 'n_act_steps' : 2 , 'time_steps' : [ 10, 10 ],
-				 'max_num_inc': 700, 'ini_inc' : dimensions.time_inc ,
-				 'min_inc' : 1e-6, 'max_inc' : 1  }
-
-
 #----------------------------------------------------------------------------------
 #          Determination of parameters relating loading to nominals SIF 
 #----------------------------------------------------------------------------------
@@ -81,31 +76,13 @@ plastic = Plastic( pType = 'none')
 
 # Mode I
 
-#ELTest_I 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [1.], 
-#				'KII_range' : [0.], 'KIII_range' : [0.], 'NLGEOM': False }
+ELTest_I 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [1.], 
+				'KII_range' : [0.], 'KIII_range' : [0.], 'NLGEOM': False }
 
-#EL_Norm_JobName_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
-
-
-
-# Test parameters:
-
-KI_range_I   = [ 40., 0.1]
-KII_range_I  = [  0.,  0.]
-KIII_range_I = [  0.,  0.]
-
-PLTest_I 	 = { 'name' : 'EP', 'test_type' : 'Mon', 'NLGEOM': False ,
-				'loading_type' : loading_type, 'KI_range' : KI_range_I , 
-				'KII_range' : KII_range_I, 'KIII_range' : KIII_range_I }
-
-
-Mon_PL_JobName_I   = Compute(mdb, PLTest_I  , PL_Mon_Job, Param, elastic, odbSrcLGEOM)
-
-#Mon_PL_JobName_I   , EPJob_Descrip_I   = Generate_names(PLTest_I  , elastic, odbSrcLGEOM )
-
+EL_Norm_JobName_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
 
 file2=open('last_job_file.txt','w') 
-file2.write('%s\n' % Mon_PL_JobName_I) 
+file2.write('%s\n' % EL_Norm_JobName_I) 
 file2.write('%s\n' % odbSrc) 
 file2.write('%s\n' % odbSrcEL ) 
 file2.write('%s\n' % odbSrcLGEOM ) 

@@ -1,0 +1,8 @@
+***material
+  *rotation -19.286325 65.905157 26.565051
+***behavior elastic
+ **elasticity cubic
+   y1111 197000.0
+   y1122 144000.0
+   y1212 90000.0
+***return

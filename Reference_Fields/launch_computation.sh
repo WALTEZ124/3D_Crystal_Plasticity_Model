@@ -70,7 +70,7 @@ sed -i -e "s/rotation.*/rotation ${Vectors}/" material_model_elastic.zmat
 sed -i -e "s/rotation.*/rotation ${Vectors}/" material_model_elastic_plastic.zmat
 
 Zpreload material_model_elastic.zmat > Zpreload_material_model_elastic.txt
-#Zpreload material_model_elastic_plastic.zmat > Zpreload_material_model_elastic_plastic.txt
+Zpreload material_model_elastic_plastic.zmat > Zpreload_material_model_elastic_plastic.txt
 
 ## Generate INP File
 abaqus_6.11-2 cae noGUI=Create_INP_file.py
@@ -82,13 +82,13 @@ OdbSrcEL=$(sed -n 3p last_job_file.txt)
 OdbSrcLGEOM=$(sed -n 4p last_job_file.txt)
 
 ## Insert the Zmat material configuration in the inp file
-sed -i -e 's/material=Elastic-Plastic\s*$/material=material_model_elastic.zmat/' $JobName
+sed -i -e 's/material=Elastic-Plastic\s*$/material=material_model_elastic_plastic.zmat/' $JobName
 sed -i -e 's/material=Elastic\s*$/material=material_model_elastic.zmat/' $JobName
 
 #sed -i -e 's/material=Elastic-Rigid\s*$/material=material_model_elastic.zmat/' "${JobName}.inp"
 
 grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic.txt > material_def_inp.inp
-#grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic_plastic.txt >> material_def_inp.inp
+grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic_plastic.txt >> material_def_inp.inp
 
 materials_location=`grep -n '** MATERIALS' $JobName | awk -F ":" '{print $1}'`
 

@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## Input material orientation
-hkl_list=(0 1 0)
-uvw_list=(1 0 0)
+hkl_list=(1 1 0)
+uvw_list=(1 -1 0)
 
 ## Modify the Input File (for file names)
 sed -i -e "s/	hkl =.*/	hkl = np.asarray([ ${hkl_list[0]}, ${hkl_list[1]}, ${hkl_list[2]}])/" Input_Computation.py
@@ -70,46 +70,40 @@ sed -i -e "s/rotation.*/rotation ${Vectors}/" material_model_elastic.zmat
 sed -i -e "s/rotation.*/rotation ${Vectors}/" material_model_elastic_plastic.zmat
 
 Zpreload material_model_elastic.zmat > Zpreload_material_model_elastic.txt
-#Zpreload material_model_elastic_plastic.zmat > Zpreload_material_model_elastic_plastic.txt
+Zpreload material_model_elastic_plastic.zmat > Zpreload_material_model_elastic_plastic.txt
+
+grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic.txt > material_def_inp.inp
+grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic_plastic.txt >> material_def_inp.inp
 
 ## Generate INP File
 abaqus_6.11-2 cae noGUI=Create_INP_file.py
 
 ## Import JobName and sources' path from previous computation
-JobName=$(sed -n 1p last_job_file.txt).inp
-OdbSrc=$(sed -n 2p last_job_file.txt)
-OdbSrcEL=$(sed -n 3p last_job_file.txt)
-OdbSrcLGEOM=$(sed -n 4p last_job_file.txt)
+JobName_I=$(sed -n 1p EP_job_details_I.txt).inp
+JobName_II=$(sed -n 1p EP_job_details_II.txt).inp
+JobName_III=$(sed -n 1p EP_job_details_III.txt).inp
+JobName_Mix=$(sed -n 1p EP_job_details_Mix.txt).inp
 
-## Insert the Zmat material configuration in the inp file
-sed -i -e 's/material=Elastic-Plastic\s*$/material=material_model_elastic.zmat/' $JobName
-sed -i -e 's/material=Elastic\s*$/material=material_model_elastic.zmat/' $JobName
+OdbSrc=$(sed -n 3p EP_job_details_I.txt)
+OdbSrcEL=$(sed -n 4p EP_job_details_I.txt)
+OdbSrcLGEOM=$(sed -n 5p EP_job_details_I.txt)
 
-#sed -i -e 's/material=Elastic-Rigid\s*$/material=material_model_elastic.zmat/' "${JobName}.inp"
-
-grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic.txt > material_def_inp.inp
-#grep -A 4 '*MATERIAL,NAME' Zpreload_material_model_elastic_plastic.txt >> material_def_inp.inp
-
-materials_location=`grep -n '** MATERIALS' $JobName | awk -F ":" '{print $1}'`
-
-insertion_line=$(($materials_location+2))
-
-sed -i "${insertion_line}i **here" $JobName
-
-begin="**here"
-end="*Material, name=Elastic-Rigid"
-
-sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.inp
-	}; /$end/p; d}" $JobName
-sed -i '/**here/d' $JobName
-
-## Launch Job on Zmat
-
-# To configurate Zebulon with abaqus_6.11-2
-#source ~zebulon/Z8.7/do_config.sh 
-
-Zmat cpus=12 memory=16gb $JobName
-
-
-
-
+for JobName in $JobName_I $JobName_II $JobName_III $JobName_Mix
+do
+	## Insert the Zmat material configuration in the inp file
+	sed -i -e 's/material=Elastic-Plastic\s*$/material=material_model_elastic_plastic.zmat/' $JobName
+	sed -i -e 's/material=Elastic\s*$/material=material_model_elastic.zmat/' $JobName
+	#sed -i -e 's/material=Elastic-Rigid\s*$/material=material_model_elastic.zmat/' "$JobName"
+	materials_location=`grep -n '** MATERIALS' $JobName | awk -F ":" '{print $1}'`
+	insertion_line=$(($materials_location+2))
+	sed -i "${insertion_line}i **here" $JobName
+	begin="**here"
+	end="*Material, name=Elastic-Rigid"
+	sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.inp
+		}; /$end/p; d}" $JobName
+	sed -i '/**here/d' $JobName
+	## Launch Job on Zmat
+	# To configurate Zebulon with abaqus_6.11-2
+	#source ~zebulon/Z8.7/do_config.sh 
+	#Zmat cpus=12 memory=16gb $JobName
+done

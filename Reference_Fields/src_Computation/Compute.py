@@ -94,5 +94,5 @@ def Compute(mdb, test, job, Param, elastic, odbSrc):
 	#	Field_Capture(odb, odbSrc, jobName, 'PEEQ', 10, n_act_steps)    			# Capture and save the crack tip at each step end with a magnification factor = 10
 	#	odb.close()
 	#print 'Computation successfully finished '
-	return jobName
+	return jobName, jobDescrip
 

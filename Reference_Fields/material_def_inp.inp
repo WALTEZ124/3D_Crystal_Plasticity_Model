@@ -1,0 +1,11 @@
+*Material, name=material_model_elastic.zmat
+*DEPVAR
+12
+*USER MATERIAL,CONSTANTS=1
+0.0
+*Material, name=material_model_rigid.zmat
+*DEPVAR
+  6
+*USER MATERIAL,CONSTANTS=1
+0.0
+
