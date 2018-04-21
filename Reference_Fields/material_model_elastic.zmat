@@ -1,5 +1,5 @@
 ***material
-  *rotation -19.286325 65.905157 26.565051
+  *rotation x1 1.000000 0.000000 0.000000 x2 0.000000 1.000000 0.000000
 ***behavior elastic
  **elasticity cubic
    y1111 197000.0
