@@ -185,9 +185,9 @@ def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
 	DUx_EL_Lips_III = UrefEL.III.Delta_x
 	DUy_EL_Lips_III = UrefEL.III.Delta_y
 	DUz_EL_Lips_III = UrefEL.III.Delta_z
-	Norme_EL_I   = UrefEL.I.norme
-	Norme_EL_II  = UrefEL.II.norme
-	Norme_EL_III  = UrefEL.III.norme
+	Norme_EL_I   = UrefEL.I.DU_norme
+	Norme_EL_II  = UrefEL.II.DU_norme
+	Norme_EL_III  = UrefEL.III.DU_norme
 	KI_tild  =[]
 	KII_tild =[]
 	KIII_tild =[]
@@ -259,9 +259,9 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
 	DUx_EL_Lips_III = eval('UrefEL.%s.Delta_x' % mode_order[2])
 	DUy_EL_Lips_III = eval('UrefEL.%s.Delta_y' % mode_order[2])
 	DUz_EL_Lips_III = eval('UrefEL.%s.Delta_z' % mode_order[2])
-	Norme_EL_I    = eval('UrefEL.%s.norme' % mode_order[0])
-	Norme_EL_II   = eval('UrefEL.%s.norme' % mode_order[1])
-	Norme_EL_III  = eval('UrefEL.%s.norme' % mode_order[2])
+	Norme_EL_I    = eval('UrefEL.%s.DU_norme' % mode_order[0])
+	Norme_EL_II   = eval('UrefEL.%s.DU_norme' % mode_order[1])
+	Norme_EL_III  = eval('UrefEL.%s.DU_norme' % mode_order[2])
 	KI_tild   =[]
 	KII_tild  =[]
 	KIII_tild =[]
