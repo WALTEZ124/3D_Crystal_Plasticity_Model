@@ -61,8 +61,8 @@ def Plastic_Field_Order_Dependent(test, mode_order, UrefEL, dimensions):
 	dUx_tot = test.dUx_tot
 	dUy_tot = test.dUy_tot
 	dUz_tot = test.dUz_tot
+	time_len= len(test.time)
 	listN_F_len = dimensions.listN_F_len
-	time_len = dimensions.time_len
 	Ux_EL_ref_I   = eval('UrefEL.%s.x' % mode_order[0])
 	Uy_EL_ref_I   = eval('UrefEL.%s.y' % mode_order[0])
 	Uz_EL_ref_I   = eval('UrefEL.%s.z' % mode_order[0])
@@ -166,7 +166,7 @@ def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
 	listN_F_len = dimensions.listN_F_len
 	rad_len     = dimensions.rad_len
 	thet_len    = dimensions.thet_len
-	time_len    = dimensions.time_len
+	time_len    = len(test.time)
 	Ux_EL_ref_I     = UrefEL.I.x
 	Uy_EL_ref_I     = UrefEL.I.y
 	Uz_EL_ref_I     = UrefEL.I.z
@@ -240,7 +240,7 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
 	listN_F_len = dimensions.listN_F_len
 	rad_len     = dimensions.rad_len
 	thet_len    = dimensions.thet_len
-	time_len    = dimensions.time_len
+	time_len    = len(test.time)
 	Ux_EL_ref_I   = eval('UrefEL.%s.x' % mode_order[0])
 	Uy_EL_ref_I   = eval('UrefEL.%s.y' % mode_order[0])
 	Uz_EL_ref_I   = eval('UrefEL.%s.z' % mode_order[0])

@@ -2,8 +2,8 @@ def Projection(test, Uref , dimensions):
 	dUx_tot = test.dUx_tot
 	dUy_tot = test.dUy_tot	
 	dUz_tot = test.dUz_tot
+	time_len    = len(test.time)
 	listN_F_len = dimensions.listN_F_len
-	time_len = dimensions.time_len
 	Ux_EL_ref_I  = Uref.EL.I.x
 	Uy_EL_ref_I  = Uref.EL.I.y
 	Uz_EL_ref_I  = Uref.EL.I.z
@@ -88,8 +88,8 @@ def Projection_Order_Dependent(test, mode_order, Uref, dimensions):
 	dUx_tot = test.dUx_tot
 	dUy_tot = test.dUy_tot
 	dUz_tot = test.dUz_tot
+	time_len    = len(test.time)
 	listN_F_len = dimensions.listN_F_len
-	time_len = dimensions.time_len
 	Ux_EL_ref_I   = eval('Uref.EL.%s.x' %mode_order[0])
 	Uy_EL_ref_I   = eval('Uref.EL.%s.y' %mode_order[0])
 	Uz_EL_ref_I   = eval('Uref.EL.%s.z' %mode_order[0])

@@ -13,7 +13,7 @@ def Reconstruct_Fields(test , Uref , dimensions ):
 	dRhoIII    = test.dRhoIII
 
 	listN_F_len = dimensions.listN_F_len
-	time_len = dimensions.time_len
+	time_len    = len(test.time)
 
 	Ux_EL_ref_I  = Uref.EL.I.x
 	Uy_EL_ref_I  = Uref.EL.I.y
