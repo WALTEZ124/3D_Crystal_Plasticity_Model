@@ -36,7 +36,8 @@ loading_type   = 'Imposed_Force'
 
 
 
-material_orientation_list = [ [(0,1,0),(1,0,0)] ,[(1,1,0),(1,-1,0)]]
+material_orientation_list = [ [(0,1,0),(1,0,0)] ,[(1,1,0),(1,-1,0)], [(1,1,0),(0,0,1)], [(1,1,0),(1,-1,1)]]
+
 for couple in  material_orientation_list :
     Shkl = "%d%d%d" % couple[0]
     Suvw = "%d%d%d" % couple[1]
@@ -60,7 +61,7 @@ for couple in  material_orientation_list :
     rad_len = len(rad)
     thet_len = len(Uref.EL.I.g_theta_x)
     theta = np.linspace(-np.pi,np.pi,thet_len)
-    loading_step = 4
+    loading_step = 5
     # Load Elastic Reference Fields:
     mode_order_list = [ 'without_order', 'order_I_II_III' ]
     for mode_order in mode_order_list :
