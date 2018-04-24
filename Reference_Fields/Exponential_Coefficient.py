@@ -67,7 +67,7 @@ for couple in  material_orientation_list :
     for mode_order in mode_order_list :
         # Load Plastic fields:
         src_folder = os.path.join(ResultsDir_New, mode_order )
-        file2=open(os.path.join( src_folder,'Pastic_Field_%s_%s.p' % (mode_order, suffix) ),'rb')
+        file2=open(os.path.join( src_folder,'Plastic_Field_%s_%s.p' % (mode_order, suffix) ),'rb')
         PL_field = pickle.load(file2)
         #PL_field = pickle.load(file2, encoding='latin1')
         file2.close()
