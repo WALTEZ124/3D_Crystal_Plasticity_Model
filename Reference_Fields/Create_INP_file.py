@@ -62,7 +62,7 @@ EL_Job      = { 'n_tot_steps' : n_tot_steps, 'n_act_steps' : 1 , 'time_steps' : 
 				'max_num_inc': 100, 'ini_inc' : 1.0 , 'min_inc' : 1e-3, 'max_inc' : 1 }
 
 PL_Mon_Job  = { 'n_tot_steps' : n_tot_steps, 'n_act_steps' : 1 , 'time_steps' : [ 10 ],
-				 'max_num_inc': 700, 'ini_inc' : dimensions.time_inc ,
+				 'max_num_inc': 1000, 'ini_inc' : dimensions.time_inc ,
 				 'min_inc' : 1e-6, 'max_inc' : 1  }
 
 
@@ -87,19 +87,44 @@ plastic = Plastic( pType = 'none')
 ELTest_I 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [1.], 
 				'KII_range' : [0.], 'KIII_range' : [0.], 'NLGEOM': False }
 
-#EL_Norm_JobName_I ,ELJob_Descrip_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
+EL_Norm_JobName_I ,ELJob_Descrip_I = Compute(mdb, ELTest_I, EL_Job, Param, elastic, odbSrcEL)
 
 # Mode II
 
 ELTest_II 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [0.], 
 				'KII_range' : [1.], 'KIII_range' : [0.], 'NLGEOM': False }
-#EL_Norm_JobName_II , ELJob_Descrip_II = Compute(mdb, ELTest_II, EL_Job, Param, elastic, odbSrcEL)
+EL_Norm_JobName_II , ELJob_Descrip_II = Compute(mdb, ELTest_II, EL_Job, Param, elastic, odbSrcEL)
 
 # Mode III
 
 ELTest_III 	= { 'name' : 'EL_Norm', 'loading_type' : loading_type, 'KI_range' : [0.], 
 				'KII_range' : [0.], 'KIII_range' : [1.], 'NLGEOM': False }
-#EL_Norm_JobName_III , ELJob_Descrip_II = Compute(mdb, ELTest_III, EL_Job, Param, elastic, odbSrcEL)
+EL_Norm_JobName_III , ELJob_Descrip_III = Compute(mdb, ELTest_III, EL_Job, Param, elastic, odbSrcEL)
+
+
+file2=open('EL_job_details_I.txt','w') 
+file2.write('%s\n' % EL_Norm_JobName_I) 
+file2.write('%s\n' % ELJob_Descrip_I ) 
+file2.write('%s\n' % odbSrc) 
+file2.write('%s\n' % odbSrcEL ) 
+file2.write('%s\n' % odbSrcLGEOM ) 
+file2.close()
+
+file2=open('EL_job_details_II.txt','w') 
+file2.write('%s\n' % EL_Norm_JobName_II) 
+file2.write('%s\n' % ELJob_Descrip_II ) 
+file2.write('%s\n' % odbSrc) 
+file2.write('%s\n' % odbSrcEL ) 
+file2.write('%s\n' % odbSrcLGEOM ) 
+file2.close()
+
+file2=open('EL_job_details_III.txt','w') 
+file2.write('%s\n' % EL_Norm_JobName_III) 
+file2.write('%s\n' % ELJob_Descrip_III ) 
+file2.write('%s\n' % odbSrc) 
+file2.write('%s\n' % odbSrcEL ) 
+file2.write('%s\n' % odbSrcLGEOM ) 
+file2.close()
 
 #:------------------------------------
 # Set plastic computation

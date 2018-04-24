@@ -159,7 +159,7 @@ def Plastic_Field_Order_Dependent(test, mode_order, UrefEL, dimensions):
 
 
 
-def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
+def Plastic_Field_Faces_Projection(test, UrefEL, dimensions):
 	dUx_tot = test.dUx_tot
 	dUy_tot = test.dUy_tot
 	dUz_tot = test.dUz_tot
@@ -176,15 +176,15 @@ def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
 	Ux_EL_ref_III   = UrefEL.III.x
 	Uy_EL_ref_III   = UrefEL.III.y
 	Uz_EL_ref_III   = UrefEL.III.z
-	DUx_EL_Lips_I   = UrefEL.I.Delta_x
-	DUy_EL_Lips_I   = UrefEL.I.Delta_y
-	DUz_EL_Lips_I   = UrefEL.I.Delta_z
-	DUx_EL_Lips_II  = UrefEL.II.Delta_x
-	DUy_EL_Lips_II  = UrefEL.II.Delta_y
-	DUz_EL_Lips_II  = UrefEL.II.Delta_z
-	DUx_EL_Lips_III = UrefEL.III.Delta_x
-	DUy_EL_Lips_III = UrefEL.III.Delta_y
-	DUz_EL_Lips_III = UrefEL.III.Delta_z
+	DUx_EL_Faces_I   = UrefEL.I.Delta_x
+	DUy_EL_Faces_I   = UrefEL.I.Delta_y
+	DUz_EL_Faces_I   = UrefEL.I.Delta_z
+	DUx_EL_Faces_II  = UrefEL.II.Delta_x
+	DUy_EL_Faces_II  = UrefEL.II.Delta_y
+	DUz_EL_Faces_II  = UrefEL.II.Delta_z
+	DUx_EL_Faces_III = UrefEL.III.Delta_x
+	DUy_EL_Faces_III = UrefEL.III.Delta_y
+	DUz_EL_Faces_III = UrefEL.III.Delta_z
 	Norme_EL_I   = UrefEL.I.DU_norme
 	Norme_EL_II  = UrefEL.II.DU_norme
 	Norme_EL_III  = UrefEL.III.DU_norme
@@ -198,9 +198,9 @@ def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
 		for j in range(rad_len):
 			j1 = j*thet_len
 			j2 = (j+1)*thet_len-1
-			dKI_tild   += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Lips_I[j] )   + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Lips_I[j] )   + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Lips_I[j] )   #projection du saut de deplacement totatl sur le saut de deplacement de reference
-			dKII_tild  += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Lips_II[j] )  + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Lips_II[j] )  + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Lips_II[j] )
-			dKIII_tild += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Lips_III[j] ) + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Lips_III[j] ) + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Lips_III[j] )
+			dKI_tild   += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Faces_I[j] )   + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Faces_I[j] )   + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Faces_I[j] )   #projection du saut de deplacement totatl sur le saut de deplacement de reference
+			dKII_tild  += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Faces_II[j] )  + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Faces_II[j] )  + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Faces_II[j] )
+			dKIII_tild += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Faces_III[j] ) + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Faces_III[j] ) + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Faces_III[j] )
 		KItild  = dKI_tild  / Norme_EL_I
 		KI_tild.append(KItild)
 		KIItild = dKII_tild / Norme_EL_II
@@ -233,7 +233,7 @@ def Plastic_Field_Lips_Projection(test, UrefEL, dimensions):
 
 
 
-def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dimensions):
+def Plastic_Field_Faces_Projection_Order_Dependent(test, mode_order, UrefEL, dimensions):
 	dUx_tot = test.dUx_tot
 	dUy_tot = test.dUy_tot
 	dUz_tot = test.dUz_tot
@@ -250,15 +250,15 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
 	Ux_EL_ref_III = eval('UrefEL.%s.x' % mode_order[2])
 	Uy_EL_ref_III = eval('UrefEL.%s.y' % mode_order[2])
 	Uz_EL_ref_III = eval('UrefEL.%s.z' % mode_order[2])
-	DUx_EL_Lips_I   = eval('UrefEL.%s.Delta_x' % mode_order[0])
-	DUy_EL_Lips_I   = eval('UrefEL.%s.Delta_y' % mode_order[0])
-	DUz_EL_Lips_I   = eval('UrefEL.%s.Delta_z' % mode_order[0])
-	DUx_EL_Lips_II  = eval('UrefEL.%s.Delta_x' % mode_order[1])
-	DUy_EL_Lips_II  = eval('UrefEL.%s.Delta_y' % mode_order[1])
-	DUz_EL_Lips_II  = eval('UrefEL.%s.Delta_z' % mode_order[1])
-	DUx_EL_Lips_III = eval('UrefEL.%s.Delta_x' % mode_order[2])
-	DUy_EL_Lips_III = eval('UrefEL.%s.Delta_y' % mode_order[2])
-	DUz_EL_Lips_III = eval('UrefEL.%s.Delta_z' % mode_order[2])
+	DUx_EL_Faces_I   = eval('UrefEL.%s.Delta_x' % mode_order[0])
+	DUy_EL_Faces_I   = eval('UrefEL.%s.Delta_y' % mode_order[0])
+	DUz_EL_Faces_I   = eval('UrefEL.%s.Delta_z' % mode_order[0])
+	DUx_EL_Faces_II  = eval('UrefEL.%s.Delta_x' % mode_order[1])
+	DUy_EL_Faces_II  = eval('UrefEL.%s.Delta_y' % mode_order[1])
+	DUz_EL_Faces_II  = eval('UrefEL.%s.Delta_z' % mode_order[1])
+	DUx_EL_Faces_III = eval('UrefEL.%s.Delta_x' % mode_order[2])
+	DUy_EL_Faces_III = eval('UrefEL.%s.Delta_y' % mode_order[2])
+	DUz_EL_Faces_III = eval('UrefEL.%s.Delta_z' % mode_order[2])
 	Norme_EL_I    = eval('UrefEL.%s.DU_norme' % mode_order[0])
 	Norme_EL_II   = eval('UrefEL.%s.DU_norme' % mode_order[1])
 	Norme_EL_III  = eval('UrefEL.%s.DU_norme' % mode_order[2])
@@ -273,7 +273,7 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
 		for j in range(rad_len):
 			j1 = j*thet_len
 			j2 = (j+1)*thet_len-1
-			dKI_tild   += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Lips_I[j] )   + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Lips_I[j] )   + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Lips_I[j] )   #projection du saut de deplacement totatl sur le saut de deplacement de reference
+			dKI_tild   += ( (dUx_tot[j2][i]-dUx_tot[j1][i]) * DUx_EL_Faces_I[j] )   + ( (dUy_tot[j2][i]-dUy_tot[j1][i]) * DUy_EL_Faces_I[j] )   + ( (dUz_tot[j2][i]-dUz_tot[j1][i]) * DUz_EL_Faces_I[j] )   #projection du saut de deplacement totatl sur le saut de deplacement de reference
 		KItild  = dKI_tild  / Norme_EL_I
 		KI_tild.append(KItild)
 		dKII_tild=0.
@@ -290,7 +290,7 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
  		for j in range(rad_len):
 			j1 = j*thet_len
 			j2 = (j+1)*thet_len-1
-			dKII_tild  += ( (dUx_int_I[j2]-dUx_int_I[j1]) * DUx_EL_Lips_II[j] )  + ( (dUy_int_I[j2]-dUy_int_I[j1]) * DUy_EL_Lips_II[j] )  + ( (dUz_int_I[j2]-dUz_int_I[j1]) * DUz_EL_Lips_II[j] )
+			dKII_tild  += ( (dUx_int_I[j2]-dUx_int_I[j1]) * DUx_EL_Faces_II[j] )  + ( (dUy_int_I[j2]-dUy_int_I[j1]) * DUy_EL_Faces_II[j] )  + ( (dUz_int_I[j2]-dUz_int_I[j1]) * DUz_EL_Faces_II[j] )
 		KIItild = dKII_tild / Norme_EL_II
 		KII_tild.append(KIItild)
 		dUx_int_I_II = []
@@ -307,7 +307,7 @@ def Plastic_Field_Lips_Projection_Order_Dependent(test, mode_order, UrefEL, dime
  		for j in range(rad_len):
 			j1 = j*thet_len
 			j2 = (j+1)*thet_len-1
-			dKIII_tild += ( (dUx_int_I_II[j2]-dUx_int_I_II[j1]) * DUx_EL_Lips_III[j] )  + ( (dUy_int_I_II[j2]-dUy_int_I_II[j1]) * DUy_EL_Lips_III[j] )  + ( (dUz_int_I_II[j2]-dUz_int_I_II[j1]) * DUz_EL_Lips_III[j] )
+			dKIII_tild += ( (dUx_int_I_II[j2]-dUx_int_I_II[j1]) * DUx_EL_Faces_III[j] )  + ( (dUy_int_I_II[j2]-dUy_int_I_II[j1]) * DUy_EL_Faces_III[j] )  + ( (dUz_int_I_II[j2]-dUz_int_I_II[j1]) * DUz_EL_Faces_III[j] )
 		KIIItild = dKIII_tild / Norme_EL_III
 		KIII_tild.append(KIIItild)
 		dUx_int_I_II_III = []

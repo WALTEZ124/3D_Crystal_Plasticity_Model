@@ -50,7 +50,7 @@ R2 =  loading_type
 R3 = 'Results_Post_Proc_octahedral'
 R4 = 'Results_Post_Proc_%s' % (suffix )
 R5 = 'Small_Loading'
-R6 = 'Projection_On_Crack_Lips'
+R6 = 'Projection_On_Crack_Faces'
 
 ResultsDir = os.path.join(R1, R2, R3, R4, R5)
 if not os.path.exists(ResultsDir):
@@ -520,16 +520,16 @@ for mode_order, mode_order_suffix in zip(mode_order_list, mode_order_suffix_list
     if not os.path.exists(ResultsDir_Order_Dependent):
         os.makedirs(ResultsDir_Order_Dependent)
     if mode_order_suffix == 'without_order':
-        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Lips_Projection(test_I , Uref.EL , dimensions)
-        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Lips_Projection(test_II , Uref.EL , dimensions)
-        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Lips_Projection(test_III , Uref.EL , dimensions)
+        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection(test_I , Uref.EL , dimensions)
+        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection(test_II , Uref.EL , dimensions)
+        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection(test_III , Uref.EL , dimensions)
     else :
-        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Lips_Projection_Order_Dependent(test_I, mode_order , Uref.EL , dimensions)
-        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Lips_Projection_Order_Dependent(test_II, mode_order , Uref.EL , dimensions)
-        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Lips_Projection_Order_Dependent(test_III, mode_order , Uref.EL , dimensions)
+        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection_Order_Dependent(test_I, mode_order , Uref.EL , dimensions)
+        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection_Order_Dependent(test_II, mode_order , Uref.EL , dimensions)
+        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection_Order_Dependent(test_III, mode_order , Uref.EL , dimensions)
     ##### Mode I
     file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_I_%s' % suffix),'w') 
-    for t in range(dimensions.time_len-1):
+    for t in range(len(test_I.time)-1):
         file2.write('%30.20E   ' % test_I.time[t+1])
         file2.write('%30.20E   ' % dKI_tild_I[t])
         file2.write('%30.20E   ' % dKII_tild_I[t])
@@ -538,7 +538,7 @@ for mode_order, mode_order_suffix in zip(mode_order_list, mode_order_suffix_list
     file2.close()
     ##### Mode II
     file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_II_%s' % suffix),'w') 
-    for t in range(dimensions.time_len-1):
+    for t in range(len(test_II.time)-1):
         file2.write('%30.20E   ' % test_II.time[t+1])
         file2.write('%30.20E   ' % dKI_tild_II[t])
         file2.write('%30.20E   ' % dKII_tild_II[t])
@@ -547,7 +547,7 @@ for mode_order, mode_order_suffix in zip(mode_order_list, mode_order_suffix_list
     file2.close()
     ##### Mode III
     file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_III_%s' % suffix),'w') 
-    for t in range(dimensions.time_len-1):
+    for t in range(len(test_III.time)-1):
         file2.write('%30.20E   ' % test_III.time[t+1])
         file2.write('%30.20E   ' % dKI_tild_III[t])
         file2.write('%30.20E   ' % dKII_tild_III[t])
