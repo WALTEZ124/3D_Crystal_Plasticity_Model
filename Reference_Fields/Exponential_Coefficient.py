@@ -73,10 +73,10 @@ for couple in  material_orientation_list :
         file2.close()
         for mode in ['I','II', 'III']:
             PL = eval('PL_field.dUPL.%s' %mode)
-            listN_F_len = PL.x.shape[0]
-            PL.x = PL.x.tolist()
-            PL.y = PL.y.tolist()
-            PL.z = PL.z.tolist()
+            #PL.x = PL.x.tolist()
+            #PL.y = PL.y.tolist()
+            #PL.z = PL.z.tolist()
+            listN_F_len = len(PL.x)
             K_max = PL.Loading_range[0]
             time_len = len(PL.time)
             rad_min = 0

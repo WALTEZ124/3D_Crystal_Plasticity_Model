@@ -1,0 +1,19 @@
+***material
+  *rotation x1 1.000000 0.000000 0.000000 x2 0.000000 1.000000 0.000000
+***integration theta_method_a 1. 1.e-6 500
+***behavior gen_evp auto_step
+ **elasticity cubic
+   y1111 197000.0
+   y1122 144000.0
+   y1212 90000.0
+**potential octahedral ev
+%Parameters from N. Marchal PhD thesis 2007 and Hanriot 1993
+ *isotropic nonlinear  R0 69. b 0. Q 0.
+ *kinematic nonlinear
+  C 215600.0
+  D 1960.0
+***stepping_controls
+  *full_step_jacobian
+  *divergence 2.0 20
+  *security   1.5
+***return
