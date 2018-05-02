@@ -52,7 +52,7 @@ n_cycles = 6.
 
 PL_Cyc_Job  = { 'n_tot_steps' : n_tot_steps, 'n_act_steps' : 2 , 'time_steps' : [ 1., 10. ],
 				 'max_num_inc': 1000, 'ini_inc' : dimensions.time_inc ,
-				 'min_inc' : 1e-6, 'max_inc' : 1, 'n_cycles': n_cycles  }
+				 'min_inc' : 1e-6, 'max_inc' : 1, 'n_cycles': n_cycles }
 
 #----------------------------------------------------------------------------------
 #          Determination of parameters relating loading to nominals SIF 
@@ -133,46 +133,44 @@ file2=open('EP_Cyc_job_details_Mix.txt','w')
 file2.write('%s\n' % Cyc_PL_JobName_Mix) 
 file2.write('%s\n' % EPJob_Descrip_Mix ) 
 file2.write('%s\n' % odbSrc) 
-file2.write('%s\n' % odbSrcEL ) 
-file2.write('%s\n' % odbSrcLGEOM ) 
 file2.close()
 
 # Save Job Container for Post processing
 
-Cyc_PL_JobName_I   , EPJob_Descrip_I   = Generate_names(PLTest_I  , elastic, odbSrcLGEOM )
-Cyc_PL_JobName_II  , EPJob_Descrip_II  = Generate_names(PLTest_II , elastic, odbSrcLGEOM )
-Cyc_PL_JobName_III , EPJob_Descrip_III = Generate_names(PLTest_III, elastic, odbSrcLGEOM )
-Cyc_PL_JobName_Mix , EPJob_Descrip_Mix = Generate_names(PLTest_Mix, elastic, odbSrcLGEOM )
+Cyc_PL_JobName_I   , EPJob_Descrip_I   = Generate_names(PLTest_I  , elastic, odbSrc )
+Cyc_PL_JobName_II  , EPJob_Descrip_II  = Generate_names(PLTest_II , elastic, odbSrc )
+Cyc_PL_JobName_III , EPJob_Descrip_III = Generate_names(PLTest_III, elastic, odbSrc )
+Cyc_PL_JobName_Mix , EPJob_Descrip_Mix = Generate_names(PLTest_Mix, elastic, odbSrc )
 
 file2=open(os.path.join( compSrc,'Job_Parameters_%s.p' %  suffix ),'rb')
 Job = pickle.load(file2)
 file2.close()
 
-Job.I.PL.CycName        = Mon_PL_JobName_I
+Job.I.PL.CycName        = Cyc_PL_JobName_I
 Job.I.PL.CycKI_range    = KI_range_I
 Job.I.PL.CycKII_range   = KII_range_I
 Job.I.PL.CycKIII_range  = KIII_range_I
 Job.I.PL.n_cycles       = n_cycles
 
-Job.II.PL.CycName       = Mon_PL_JobName_II
+Job.II.PL.CycName       = Cyc_PL_JobName_II
 Job.II.PL.CycKI_range   = KI_range_II
 Job.II.PL.CycKII_range  = KII_range_II
 Job.II.PL.CycKIII_range = KIII_range_II
 Job.II.PL.n_cycles      = n_cycles
 
-Job.III.PL.CycName       = Mon_PL_JobName_III
+Job.III.PL.CycName       = Cyc_PL_JobName_III
 Job.III.PL.CycKI_range   = KI_range_III
 Job.III.PL.CycKII_range  = KII_range_III
 Job.III.PL.CycKIII_range = KIII_range_III
 Job.III.PL.n_cycles      = n_cycles
 
-Job.Mix.PL.CycName       = Mon_PL_JobName_Mix
+Job.Mix.PL.CycName       = Cyc_PL_JobName_Mix
 Job.Mix.PL.CycKI_range   = KI_range_Mix
 Job.Mix.PL.CycKII_range  = KII_range_Mix
 Job.Mix.PL.CycKIII_range = KIII_range_Mix
 Job.Mix.PL.n_cycles      = n_cycles
 
-file2=open(os.path.join( odbSrc,'Job_Parameters_%s.p' %  suffix),'wb')
+file2=open(os.path.join( compSrc,'Job_Parameters_%s.p' %  suffix),'wb')
 pickle.dump(Job, file2)
 file2.close()
 

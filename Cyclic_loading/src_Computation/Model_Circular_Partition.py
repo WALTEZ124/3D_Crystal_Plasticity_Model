@@ -437,6 +437,10 @@ cells1 = c1.findAt(  ((9.96, 0.1, 0.0), ), ((9.96, -0.1, 0.0), ) )
 a.Set(cells=cells1, name='FIELD-RIGHT')
 #: The set 'FIELD-RIGHT' has been created (1 face).
 
+cells1 = c1.findAt(  ((9.96, 0.1, 0.0), ), ((9.96, -0.1, 0.0), ), ((9.99, 0.01, 0.0), ), ((9.99, -0.01, 0.0), ), ((10.01, 0.01, 0.0), ), ((10.01, -0.01, 0.0), ) )
+a.Set(cells=cells1, name='FULL-CRACK-FIELD-RIGHT')
+#: The set 'FULL-CRACK-FIELD-RIGHT' has been created (1 face).
+
 faces1 = f1.findAt(  ((9.96, 0.0, 0.05), ) )
 a.Set(faces=faces1, name='FACES-RIGHT')
 #: The set 'FACES-RIGHT' has been created (1 edge).
@@ -573,9 +577,7 @@ mdb.models['Model-1'].StaticStep(name='Step-3', previous='Step-2')
 
 mdb.models['Model-1'].fieldOutputRequests['F-Output-1'].suppress()
 
-c1 = a.instances['Part-1-1'].cells
-regionDef = c1.findAt(  ((9.96, 0.1, 0.0), ), ((9.96, -0.1, 0.0), ), ((9.99, 0.01, 0.0), ), ((9.99, -0.01, 0.0), ), ((10.01, 0.01, 0.0), ), ((10.01, -0.01, 0.0), ) )
-#regionDef=mdb.models['Model-1'].rootAssembly.sets['FIELD-RIGHT']
+regionDef=mdb.models['Model-1'].rootAssembly.sets['FULL-CRACK-FIELD-RIGHT']
 
 mdb.models['Model-1'].FieldOutputRequest(name='FIELD-DISP-RIGHT',createStepName='Step-1',
     variables=('S', 'U', 'E','PEEQ','SDV'), frequency=1, region=regionDef )

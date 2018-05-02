@@ -14,7 +14,7 @@ def Compute_cyclic(mdb, test, job, Param, elastic, odbSrc):
 	max_inc       = job.get('max_inc')         
 	n_tot_steps   = job.get('n_tot_steps')
 	n_act_steps   = job.get('n_act_steps')
-	n_cylces      = job.get('n_cylces')
+	n_cylces      = job.get('n_cycles')
 	jobName, jobDescrip = Generate_names(test, elastic, odbSrc)
 	for load in ['SUP_LEFT','SUP_RIGHT','INF_LEFT','INF_RIGHT']:
 		mdb.models['Model-1'].loads[load].resume()
@@ -55,7 +55,7 @@ def Compute_cyclic(mdb, test, job, Param, elastic, odbSrc):
 	refPoints1=(r1[14], )
 	region = regionToolset.Region(referencePoints=refPoints1)
 	mdb.models['Model-1'].ConcentratedForce(name='INF_RIGHT_III', createStepName='Step-2', region=region, cf1= 0., cf2= 0., cf3 = 1.0 )
-	T = time_steps[1]/n_cylces
+	T = float(time_steps[1])/float(n_cylces)
 	circular_freq = 2*np.pi/T
 	a0_dF1 = dF1_init + dF1_cyc
 	a0_dF2 = dF2_init + dF2_cyc
@@ -96,5 +96,4 @@ def Compute_cyclic(mdb, test, job, Param, elastic, odbSrc):
 	#: Cree le fichier .inp
 	mdb.jobs[jobName].writeInput()
 	print '#: INP file generated'
-
-
+	return jobName, jobDescrip

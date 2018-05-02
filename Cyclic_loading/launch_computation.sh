@@ -85,8 +85,7 @@ EP_JobName_III=$(sed -n 1p EP_Cyc_job_details_III.txt).inp
 EP_JobName_Mix=$(sed -n 1p EP_Cyc_job_details_Mix.txt).inp
 
 OdbSrc=$(sed -n 3p EP_Cyc_job_details_I.txt)
-OdbSrcEL=$(sed -n 4p EP_Cyc_job_details_I.txt)
-OdbSrcLGEOM=$(sed -n 5p EP_Cyc_job_details_I.txt)
+
 
 ## Write INP files for elastic-plastic computation
 
@@ -115,7 +114,6 @@ done
 
 inp_folder="inp_files_cyclic_${hkl_list[0]}${hkl_list[1]}${hkl_list[2]}_${uvw_list[0]}${uvw_list[1]}${uvw_list[2]}"
 mkdir -p $inp_folder
-mv EL_* $inp_folder/
 mv EP_* $inp_folder/
 cp material_model* $inp_folder/
 
