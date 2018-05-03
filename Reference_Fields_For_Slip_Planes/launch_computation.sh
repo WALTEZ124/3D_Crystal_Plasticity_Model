@@ -76,10 +76,10 @@ EL_JobName_I=$(sed -n 1p EL_job_details_I.txt).inp
 EL_JobName_II=$(sed -n 1p EL_job_details_II.txt).inp
 EL_JobName_III=$(sed -n 1p EL_job_details_III.txt).inp
 
-EP_JobName_I=$(sed -n 1p EP_job_details_I.txt).inp
-EP_JobName_II=$(sed -n 1p EP_job_details_II.txt).inp
-EP_JobName_III=$(sed -n 1p EP_job_details_III.txt).inp
-EP_JobName_Mix=$(sed -n 1p EP_job_details_Mix.txt).inp
+EP_JobName_I=$(sed -n 1p EP_job_details_I.txt)
+EP_JobName_II=$(sed -n 1p EP_job_details_II.txt)
+EP_JobName_III=$(sed -n 1p EP_job_details_III.txt)
+EP_JobName_Mix=$(sed -n 1p EP_job_details_Mix.txt)
 
 OdbSrc=$(sed -n 3p EP_job_details_I.txt)
 OdbSrcEL=$(sed -n 4p EP_job_details_I.txt)
@@ -131,15 +131,15 @@ do
 	slip_suffix=${slip_systems_suffix[$i]}
 	material_file_elastic_plastic="material_model_elastic_plastic_${used_material}_${slip_suffix}.zmat"
 	cp "material_model_elastic_plastic_${used_material}.zmat" ${material_file_elastic_plastic}
-	sed -i -e "s/**potential.*/**potential slip ${slip_system}/" ${material_file_elastic_plastic}
+	sed -i -e "s/**potential.*/**potential plane ${slip_system}/" ${material_file_elastic_plastic}
 	Zpreload ${material_file_elastic_plastic} > "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt"
 	## Write INP files for elastic-plastic computation
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_${used_material}.txt" > material_def_inp.inp
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" >> material_def_inp.inp
 	for JobName in $EP_JobName_I $EP_JobName_II $EP_JobName_III $EP_JobName_Mix
 	do
-		NewJobName="${JobName}_${slip_suffix}"
-		cp $JobName $NewJobName
+		NewJobName="${JobName}_${slip_suffix}.inp"
+		cp "${JobName}.inp" $NewJobName
 		## Insert the Zmat material configuration in the inp file
 		sed -i -e 's/material=Elastic-Plastic\s*$/material=${material_file_elastic_plastic}/' ${NewJobName}
 		sed -i -e 's/material=Elastic\s*$/material=${material_file_elastic}/' ${NewJobName}
@@ -158,7 +158,8 @@ do
 		#Zmat cpus=12 memory=16gb $NewJobName
 	done
 	mkdir -p ${inp_folder}/${slip_suffix}/
-	mv EP_* ${inp_folder}/${slip_suffix}/
+	mv ${NewJobName} ${inp_folder}/${slip_suffix}/
+	cp EP_job_details* ${inp_folder}/${slip_suffix}/
 	cp ${material_file_elastic} ${inp_folder}/${slip_suffix}/
 	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
 done
