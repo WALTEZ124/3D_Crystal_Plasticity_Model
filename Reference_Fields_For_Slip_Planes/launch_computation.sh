@@ -136,13 +136,14 @@ do
 	## Write INP files for elastic-plastic computation
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_${used_material}.txt" > material_def_inp.inp
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" >> material_def_inp.inp
+	mkdir -p ${inp_folder}/${slip_suffix}/
 	for JobName in $EP_JobName_I $EP_JobName_II $EP_JobName_III $EP_JobName_Mix
 	do
 		NewJobName="${JobName}_${slip_suffix}.inp"
 		cp "${JobName}.inp" $NewJobName
 		## Insert the Zmat material configuration in the inp file
-		sed -i -e 's/material=Elastic-Plastic\s*$/material=${material_file_elastic_plastic}/' ${NewJobName}
-		sed -i -e 's/material=Elastic\s*$/material=${material_file_elastic}/' ${NewJobName}
+		sed -i -e "s/material=Elastic-Plastic\s*$/material=${material_file_elastic_plastic}/" ${NewJobName}
+		sed -i -e "s/material=Elastic\s*$/material=${material_file_elastic}/" ${NewJobName}
 		#sed -i -e 's/material=Elastic-Rigid\s*$/material=material_model_elastic.zmat/' ${NewJobName}
 		materials_location=`grep -n '** MATERIALS' ${NewJobName} | awk -F ":" '{print $1}'`
 		insertion_line=$(($materials_location+2))
@@ -156,12 +157,11 @@ do
 		# To configurate Zebulon with abaqus_6.11-2
 		#source ~zebulon/Z8.7/do_config.sh 
 		#Zmat cpus=12 memory=16gb $NewJobName
+		mv ${NewJobName} ${inp_folder}/${slip_suffix}/
 	done
-	mkdir -p ${inp_folder}/${slip_suffix}/
-	mv ${NewJobName} ${inp_folder}/${slip_suffix}/
+	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
 	cp EP_job_details* ${inp_folder}/${slip_suffix}/
 	cp ${material_file_elastic} ${inp_folder}/${slip_suffix}/
-	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
 done
 
 
