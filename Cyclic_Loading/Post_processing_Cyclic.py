@@ -91,6 +91,21 @@ file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Projection_On_Crack_L
 Uref_PL.III = pickle.load(file2)
 file2.close()
 
+rad_min, rad_max = Uref_PL.I.Extraction_zone
+
+Uref_PL.I.Delta_x = [ Uref_PL.I.x[(r+1)*dimensions.thet_len -1 ] - Uref_PL.I.x[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.I.Delta_y = [ Uref_PL.I.y[(r+1)*dimensions.thet_len -1 ] - Uref_PL.I.y[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.I.Delta_z = [ Uref_PL.I.z[(r+1)*dimensions.thet_len -1 ] - Uref_PL.I.z[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+
+Uref_PL.II.Delta_x = [ Uref_PL.II.x[(r+1)*dimensions.thet_len -1 ] - Uref_PL.II.x[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.II.Delta_y = [ Uref_PL.II.y[(r+1)*dimensions.thet_len -1 ] - Uref_PL.II.y[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.II.Delta_z = [ Uref_PL.II.z[(r+1)*dimensions.thet_len -1 ] - Uref_PL.II.z[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+
+Uref_PL.III.Delta_x = [ Uref_PL.III.x[(r+1)*dimensions.thet_len -1 ] - Uref_PL.III.x[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.III.Delta_y = [ Uref_PL.III.y[(r+1)*dimensions.thet_len -1 ] - Uref_PL.III.y[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+Uref_PL.III.Delta_z = [ Uref_PL.III.z[(r+1)*dimensions.thet_len -1 ] - Uref_PL.III.z[r*dimensions.thet_len]  for r in range(rad_min, rad_max)  ]
+
+
 file2=open(os.path.join( codeSrc, 'src_Reference_Fields' , 'Projection_On_Crack_Lips','Uref_EL_%s.p' %suffix ),'rb')
 Uref = pickle.load(file2 )
 file2.close() 
@@ -106,7 +121,7 @@ n_act_steps = 2
 
 mode = 'I'
 
-Job = eval('Job.%s' %mdoe )
+Job = eval('Job.%s' % mode )
 
 test = Container()
 test.JobName = Job.PL.CycName  + '.odb'
@@ -169,7 +184,7 @@ odb.close()
 dimensions.time_len = len(test.time)
 
 #-------------------------------------------------------------------------------------------------
-#                         Project fields on crack lips
+#                         Project fields on crack faces
 #-------------------------------------------------------------------------------------------------
 
 ResultsDir_Order_Dependent = os.path.join(ResultsDir, mode_order)
@@ -202,18 +217,20 @@ file2.close()
 #                         Reconstruct fields
 #-------------------------------------------------------------------------------------------------
 
-CeR, CcR, CeR_tmp, CcR_tmp = Reconstruct_Fields( test , Uref_EL, Uref_PL )
+CeR_tmp, CcR_tmp, Plastic_ratio = Reconstruct_Fields( test , Uref_EL, Uref_PL )
 
 file2=open(os.path.join( ResultsDir_Order_Dependent,'Errors_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
-file2.write('time ,     CeR_tmp,      CcR_tmp')
+file2.write('time ,     CeR_tmp,      CcR_tmp,    Plastic_ratio')
 file2.write(' \n' )
 for t in range(len(test.time)-1):
     file2.write('%30.20E   ' % test.time[t+1])
     file2.write('%30.20E   ' % CeR_tmp[t])
     file2.write('%30.20E   ' % CcR_tmp[t])
+    file2.write('%30.20E   ' % Plastic_ratio[t]) 
     file2.write(' \n' )
 
 file2.close()
+
 
 #-------------------------------------------------------------------------------------------------
 #                         Project fields on full fields
@@ -228,7 +245,7 @@ mode_order_list.pop(0)
 
 test.dKI_tild, test.dKII_tild, test.dKIII_tild, test.dRhoI, test.dRhoII, test.dRhoIII = Projection_reduced_zone_Order_Dependent(test, mode_order_list, Uref_EL, Uref_PL)
 
-file2=open(os.path.join( ResultsDir_Order_Dependent,'dK_dRho_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
+file2=open(os.path.join( ResultsDir_Order_Dependent,'dK_dRho_%s_Cyclic_mode_%s_Full_Field_Projection' %( suffix, mode ) ) ,'w') 
 
 file2.write('time ,    dKI_tild,    dKII_tild,     dKIII_tild,      dRhoI,      dRhoII,      dRhoIII')
 file2.write(' \n' )
@@ -249,18 +266,20 @@ file2.close()
 #                         Reconstruct fields
 #-------------------------------------------------------------------------------------------------
 
-CeR_FF, CcR_FF, CeR_tmp_FF, CcR_tmp_FF = Reconstruct_Fields( test , Uref_EL, Uref_PL )
+CeR_tmp, CcR_tmp, Plastic_ratio = Reconstruct_Fields( test , Uref_EL, Uref_PL )
 
-file2=open(os.path.join( ResultsDir_Order_Dependent,'Errors_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
-file2.write('time ,     CeR_tmp,      CcR_tmp')
+file2=open(os.path.join( ResultsDir_Order_Dependent,'Errors_%s_Cyclic_mode_%s_Full_Field_Projection' %( suffix, mode ) ) ,'w') 
+file2.write('time ,     CeR_tmp,      CcR_tmp,    Plastic_ratio')
 file2.write(' \n' )
 for t in range(len(test.time)-1):
     file2.write('%30.20E   ' % test.time[t+1])
-    file2.write('%30.20E   ' % CeR_tmp_FF[t])
-    file2.write('%30.20E   ' % CcR_tmp_FF[t])
+    file2.write('%30.20E   ' % CeR_tmp[t])
+    file2.write('%30.20E   ' % CcR_tmp[t])
+    file2.write('%30.20E   ' % Plastic_ratio[t]) 
     file2.write(' \n' )
 
 file2.close()
+
 
 #-------------------------------------------------------------------------------------------------
 #                         Mixed Projection on full field then on crack faces
@@ -275,7 +294,7 @@ mode_order_list.pop(0)
 
 test.dKI_tild, test.dKII_tild, test.dKIII_tild, test.dRhoI, test.dRhoII, test.dRhoIII = Mixed_Projection_on_reduced_zone_order_dependent(test, mode_order_list, Uref_EL, Uref_PL)
 
-file2=open(os.path.join( ResultsDir_Order_Dependent,'dK_dRho_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
+file2=open(os.path.join( ResultsDir_Order_Dependent,'dK_dRho_%s_Cyclic_mode_%s_Mixed_Projection' %( suffix, mode ) ) ,'w') 
 
 file2.write('time ,    dKI_tild,    dKII_tild,     dKIII_tild,      dRhoI,      dRhoII,      dRhoIII')
 file2.write(' \n' )
@@ -296,15 +315,16 @@ file2.close()
 #                         Reconstruct fields
 #-------------------------------------------------------------------------------------------------
 
-CeR_FF, CcR_FF, CeR_tmp_FF, CcR_tmp_FF = Reconstruct_Fields( test , Uref_EL, Uref_PL )
+CeR_tmp, CcR_tmp, Plastic_ratio = Reconstruct_Fields( test , Uref_EL, Uref_PL )
 
-file2=open(os.path.join( ResultsDir_Order_Dependent,'Errors_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
-file2.write('time ,     CeR_tmp,      CcR_tmp')
+file2=open(os.path.join( ResultsDir_Order_Dependent,'Errors_%s_Cyclic_mode_%s_Mixed_Projection' %( suffix, mode ) ) ,'w') 
+file2.write('time ,     CeR_tmp,      CcR_tmp,    Plastic_ratio')
 file2.write(' \n' )
 for t in range(len(test.time)-1):
     file2.write('%30.20E   ' % test.time[t+1])
-    file2.write('%30.20E   ' % CeR_tmp_FF[t])
-    file2.write('%30.20E   ' % CcR_tmp_FF[t])
+    file2.write('%30.20E   ' % CeR_tmp[t])
+    file2.write('%30.20E   ' % CcR_tmp[t])
+    file2.write('%30.20E   ' % Plastic_ratio[t]) 
     file2.write(' \n' )
 
 file2.close()
@@ -316,3 +336,5 @@ file2.close()
 file2 = open(os.path.join( ResultsDir,'Test_%s_Cyclic_mode_%s_Crack_Faces_Projection' %( suffix, mode ) ) ,'w') 
 pickle.dump(test, file2)
 file2.close()
+
+

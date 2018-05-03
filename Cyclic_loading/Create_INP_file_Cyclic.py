@@ -35,6 +35,8 @@ elif elastic.eType =='orthotropic' :
 	suffix = 'hkl_%s_uvw_%s' %(Shkl, Suvw)
 
 odbSrc = os.path.join(odbDir ,loading_type, 'src_Odb_%s_octahedral' % (suffix ),'Cyclic_Loading')
+if not os.path.exists(odbSrc):
+    os.makedirs(odbSrc)
 
 srcFile =os.path.join(compSrc,'Model_Circular_Partition.py')
 execfile(srcFile)

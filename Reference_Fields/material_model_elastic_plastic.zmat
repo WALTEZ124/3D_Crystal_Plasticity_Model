@@ -7,11 +7,16 @@
    y1122 144000.0
    y1212 90000.0
 **potential octahedral ev
-%Parameters from N. Marchal PhD thesis 2007 and Hanriot 1993
+%Parameters from N. Marchal PhD thesis 2007 and Hanriot 1993 at 950°
  *isotropic nonlinear  R0 69. b 0. Q 0.
  *kinematic nonlinear
   C 215600.0
   D 1960.0
+%Parameters from Hanriot 1993 at 20°
+% *isotropic nonlinear  R0 245. b 0. Q 0.
+% *kinematic nonlinear
+%  C 73400.0
+%  D 3270.0
 ***stepping_controls
   *full_step_jacobian
   *divergence 2.0 20

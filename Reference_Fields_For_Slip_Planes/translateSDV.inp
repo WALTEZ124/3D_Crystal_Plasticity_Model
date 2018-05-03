@@ -1,0 +1,37 @@
+****post_processing
+ ***global_parameter
+    ODB.MaxSteps 100
+ ***data_source odb
+  **open EL_Norm_hkl_010_uvw_100_KI_1_KII_0_KIII_0.odb
+  **write_geof
+  %**nset interesting_nodes *elset MAIN_ELSET *function 1.0;
+ ***data_output odb
+   *problem_name EL_Norm_hkl_010_uvw_100_KI_1_KII_0_KIII_0_translated
+   *elset ALL_ELEMENT
+ ***local_post_processing
+  **output_number 1-999
+  %**file node
+  %**nset ALL_NODES
+  **file  integ
+  **elset ALL_ELEMENT
+  % DO NOT USE PACKET SIZE HERE
+  **process copy
+   *list_var 
+	eto11 eto22 eto33 eto12 eto23 eto31 
+	sig11 sig22 sig33 sig12 sig23 sig31
+  **process copy
+   *list_var SDV1  SDV2  SDV3  SDV4  SDV5  SDV6
+   *out_var  eel11 eel22 eel33 eel12 eel23 eel31
+  %**process copy
+  % *list_var SDV7  SDV8  SDV9  SDV10  SDV11  SDV12
+  % *out_var  eth11 eth22 eth33 eth12 eth23 eth31
+  **process copy
+   *list_var SDV7   SDV8   SDV9   SDV10  SDV11  SDV12  SDV13  SDV14  SDV15  SDV16   SDV17   SDV18
+   *out_var  gamev1 gamev2 gamev3 gamev4 gamev5 gamev6 gamev7 gamev8 gamev9 gamev10 gamev11 gamev12
+  **process copy
+   *list_var SDV19 SDV20 SDV21 SDV22 SDV23 SDV24
+   *out_var  evi11 evi22 evi33 evi12 evi23 evi31 
+  **process copy
+   *list_var SDV25  SDV26  SDV27  SDV28  SDV29  SDV30  SDV31  SDV32  SDV33  SDV34   SDV35   SDV36   SDV37
+   *out_var  evcum1 evcum2 evcum3 evcum4 evcum5 evcum6 evcum7 evcum8 evcum9 evcum10 evcum11 evcum12 evgeq 
+****return
