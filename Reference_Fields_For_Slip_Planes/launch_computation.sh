@@ -118,6 +118,7 @@ done
 inp_folder="inp_files_${hkl_list[0]}${hkl_list[1]}${hkl_list[2]}_${uvw_list[0]}${uvw_list[1]}${uvw_list[2]}"
 mkdir -p $inp_folder
 mv EL_* $inp_folder/
+cp "Zpreload_material_model_elastic_${used_material}.txt" ${inp_folder}/
 cp ${material_file_elastic} ${inp_folder}/
 
 sed -i -e "s/rotation.*/rotation ${Vectors}/" "material_model_elastic_plastic_${used_material}.zmat"
@@ -159,6 +160,7 @@ do
 		#Zmat cpus=12 memory=16gb $NewJobName
 		mv ${NewJobName} ${inp_folder}/${slip_suffix}/
 	done
+	mv "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" ${inp_folder}/${slip_suffix}/
 	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
 	cp EP_job_details* ${inp_folder}/${slip_suffix}/
 	cp ${material_file_elastic} ${inp_folder}/${slip_suffix}/
