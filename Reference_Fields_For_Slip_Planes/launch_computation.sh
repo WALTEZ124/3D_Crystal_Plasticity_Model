@@ -117,9 +117,9 @@ done
 
 inp_folder="inp_files_${hkl_list[0]}${hkl_list[1]}${hkl_list[2]}_${uvw_list[0]}${uvw_list[1]}${uvw_list[2]}"
 mkdir -p $inp_folder/Elastic
-mv EL_* $inp_folder/Elastic
-cp "Zpreload_material_model_elastic_${used_material}.txt" ${inp_folder}/Elastic
-cp ${material_file_elastic} ${inp_folder}/Elastic
+mv EL_* $inp_folder/Elastic/
+cp "Zpreload_material_model_elastic_${used_material}.txt" ${inp_folder}/Elastic/
+cp ${material_file_elastic} ${inp_folder}/Elastic/
 
 sed -i -e "s/rotation.*/rotation ${Vectors}/" "material_model_elastic_plastic_${used_material}.zmat"
 
