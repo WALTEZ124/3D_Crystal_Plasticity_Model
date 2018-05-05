@@ -15,13 +15,6 @@ import numpy as np
 from driverUtils import executeOnCaeStartup
 executeOnCaeStartup()
 
-Pi=acos(-1.)
-
-coef_I   = 1.
-coef_II  = 1.       # if Right 1 , if left -1
-coef_III = 1.        # 
-coef_Mix = 1.
-
 
 #codeSrc = os.path.join('..','..','Code','Verify_material_orientation_Zmat_Abaqus')
 codeSrc = '.'
@@ -39,7 +32,6 @@ elif elastic.eType =='orthotropic' :
 
 odbSrc = os.path.join(odbDir ,loading_type, 'src_Odb_%s_octahedral' % (suffix ),'Loading_Range')
 odbSrcEL = os.path.join( odbSrc, 'Elastic')
-odbSrcLGEOM = os.path.join( odbSrc, 'LGEOM')
 
 ## Source folders
 
@@ -50,26 +42,19 @@ R2 =  loading_type
 R3 = 'Results_Post_Proc_octahedral'
 R4 = 'Results_Post_Proc_%s' % (suffix )
 R5 = 'AM1_20'
-R6 = 'b4'
 
 ResultsDir = os.path.join(R1, R2, R3, R4, R5)
 if not os.path.exists(ResultsDir):
     os.makedirs(ResultsDir)
 
-ResultsDir_New = os.path.join(ResultsDir, R6)
-if not os.path.exists(ResultsDir_New):
-    os.makedirs(ResultsDir_New)
-
 class Container(object):
     def __init__(self):
         pass
-
 
 # Load Job parameters:
 file2=open(os.path.join( odbSrc,'Job_Parameters_%s.p' %  suffix ),'rb')
 Job = pickle.load(file2)
 file2.close()
-
 
 Uref = Container()
 Uref.EL = Container()
@@ -78,11 +63,6 @@ Uref.PL = Container()
 Uref.EL.I = Container()
 Uref.EL.II = Container()
 Uref.EL.III = Container()
-
-#Uref.PL = Container()
-#Uref.PL.I = Container()
-#Uref.PL.II = Container()
-#Uref.PL.III = Container()
 
 #----------------------------------------------------------------
 #                       Call used functions
@@ -370,275 +350,236 @@ file2.close()
 dimensions.time_len = len(test_I.time)
 '''
 
-#-------------------------------------------------------------------------------------------------
-#                               Total field extraction   Mode I
-#-------------------------------------------------------------------------------------------------
-'''
+
+
 n_act_steps = 1
+slip_systems_list = ['b4','b2','b5','d4','d1','d6','a2','a6','a3','c5','c3','c1']
 
-test_I = Container()
-
-test_I.JobName = Job.I.PL.MonName  + '.odb'
-
-odb=openOdb(path=os.path.join(odbSrcLGEOM, test_I.JobName ))
-
-Ux_tot   =[]
-Uy_tot   =[]
-Uz_tot   =[]
-time_tot =[]
-
-for i in range(1,n_act_steps+1):
-    step = 'Step-%d' %i
-    time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
-    if i == 1 :
-        Ux_tot   = np.transpose(Ux_tot_tmp)
-        Uy_tot   = np.transpose(Uy_tot_tmp)
-        Uz_tot   = np.transpose(Uz_tot_tmp)
-        time_tot = time_tmp
-        #theta_corr_Mix = theta_corr_tmp
-    else :  
-        time_tmp.pop(0)
-        time_tmp = [ x+ time_tot[-1] for x in time_tmp]
-        Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
-        Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
-        Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
-        time_tot += time_tmp
-    del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
-
-test_I.time = time_tot
-test_I.dUx_tot = np.transpose(Ux_tot)
-test_I.dUy_tot = np.transpose(Uy_tot)
-test_I.dUz_tot = np.transpose(Uz_tot)
-
-del time_tot, Ux_tot, Uy_tot, Uz_tot
-
-print 'Plastic displacement of mode I test successfully extracted:'
-
-odb.close()
-
-dimensions.time_len = len(test_I.time)
-
-#-------------------------------------------------------------------------------------------------
-#                               Total field extraction   Mode II
-#-------------------------------------------------------------------------------------------------
-
-test_II = Container()
-
-test_II.JobName = Job.II.PL.MonName  + '.odb'
-
-odb=openOdb(path=os.path.join(odbSrcLGEOM, test_II.JobName ))
-
-Ux_tot   =[]
-Uy_tot   =[]
-Uz_tot   =[]
-time_tot =[]
-
-for i in range(1,n_act_steps+1):
-    step = 'Step-%d' %i
-    time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
-    if i == 1 :
-        Ux_tot   = np.transpose(Ux_tot_tmp)
-        Uy_tot   = np.transpose(Uy_tot_tmp)
-        Uz_tot   = np.transpose(Uz_tot_tmp)
-        time_tot = time_tmp
-        #theta_corr_Mix = theta_corr_tmp
-    else :  
-        time_tmp.pop(0)
-        time_tmp = [ x+ time_tot[-1] for x in time_tmp]
-        Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
-        Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
-        Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
-        time_tot += time_tmp
-    del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
-
-test_II.time = time_tot
-test_II.dUx_tot = np.transpose(Ux_tot)
-test_II.dUy_tot = np.transpose(Uy_tot)
-test_II.dUz_tot = np.transpose(Uz_tot)
-
-del time_tot, Ux_tot, Uy_tot, Uz_tot
-
-print 'Plastic displacement of mode II test successfully extracted:'
-
-odb.close()
-
-#-------------------------------------------------------------------------------------------------
-#                               Total field extraction   Mode III
-#-------------------------------------------------------------------------------------------------
-
-test_III = Container()
-
-test_III.JobName = Job.III.PL.MonName  + '.odb'
-
-odb=openOdb(path=os.path.join(odbSrcLGEOM, test_III.JobName ))
-
-Ux_tot   =[]
-Uy_tot   =[]
-Uz_tot   =[]
-time_tot =[]
-
-for i in range(1,n_act_steps+1):
-    step = 'Step-%d' %i
-    time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
-    if i == 1 :
-        Ux_tot   = np.transpose(Ux_tot_tmp)
-        Uy_tot   = np.transpose(Uy_tot_tmp)
-        Uz_tot   = np.transpose(Uz_tot_tmp)
-        time_tot = time_tmp
-        #theta_corr_Mix = theta_corr_tmp
-    else :  
-        time_tmp.pop(0)
-        time_tmp = [ x+ time_tot[-1] for x in time_tmp]
-        Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
-        Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
-        Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
-        time_tot += time_tmp
-    del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
-
-test_III.time = time_tot
-test_III.dUx_tot = np.transpose(Ux_tot)
-test_III.dUy_tot = np.transpose(Uy_tot)
-test_III.dUz_tot = np.transpose(Uz_tot)
-
-del time_tot, Ux_tot, Uy_tot, Uz_tot
-
-print 'Plastic displacement of mode III test successfully extracted:'
-
-odb.close()
-
-
-#-------------------------------------------------------------------------------------------------
-#                         Save total fields
-#-------------------------------------------------------------------------------------------------
-
-
-mode_order_list        = [  ['','','']   , ['I','II','III'] ]
-mode_order_suffix_list = ['without_order', 'order_I_II_III' ]
-
-for mode_order, mode_order_suffix in zip(mode_order_list, mode_order_suffix_list) :
-    ResultsDir_Order_Dependent = os.path.join(ResultsDir_New, mode_order_suffix)
-    if not os.path.exists(ResultsDir_Order_Dependent):
-        os.makedirs(ResultsDir_Order_Dependent)
-    if mode_order_suffix == 'without_order':
-        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection(test_I , Uref.EL , dimensions)
-        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection(test_II , Uref.EL , dimensions)
-        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection(test_III , Uref.EL , dimensions)
-    else :
-        dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection_Order_Dependent(test_I, mode_order , Uref.EL , dimensions)
-        dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection_Order_Dependent(test_II, mode_order , Uref.EL , dimensions)
-        dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection_Order_Dependent(test_III, mode_order , Uref.EL , dimensions)
-    ##### Mode I
-    file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_I_%s' % suffix),'w') 
-    for t in range(len(test_I.time)-1):
-        file2.write('%30.20E   ' % test_I.time[t+1])
-        file2.write('%30.20E   ' % dKI_tild_I[t])
-        file2.write('%30.20E   ' % dKII_tild_I[t])
-        file2.write('%30.20E   ' % dKIII_tild_I[t])
-        file2.write(' \n' )
+for slip_suffix in slip_systems_list :
+    ### Results folder:
+    odbSrcSlip = os.path.join( odbSrc, slip_suffix )
+    ResultsDir_Slip = os.path.join(ResultsDir, slip_suffix)
+    if not os.path.exists(ResultsDir_Slip):
+        os.makedirs(ResultsDir_Slip)
+    #-------------------------------------------------------------------------------------------------
+    #                               Total field extraction   Mode I
+    #-------------------------------------------------------------------------------------------------
+    test_I = Container()
+    test_I.JobName = '%s_%s.odb' % (Job.I.PL.MonName , slip_suffix)
+    odb=openOdb(path=os.path.join(odbSrcSlip, test_I.JobName ))
+    Ux_tot   =[]
+    Uy_tot   =[]
+    Uz_tot   =[]
+    time_tot =[]
+    for i in range(1,n_act_steps+1):
+        step = 'Step-%d' %i
+        time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
+        if i == 1 :
+            Ux_tot   = np.transpose(Ux_tot_tmp)
+            Uy_tot   = np.transpose(Uy_tot_tmp)
+            Uz_tot   = np.transpose(Uz_tot_tmp)
+            time_tot = time_tmp
+            #theta_corr_Mix = theta_corr_tmp
+        else :  
+            time_tmp.pop(0)
+            time_tmp = [ x+ time_tot[-1] for x in time_tmp]
+            Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
+            Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
+            Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
+            time_tot += time_tmp
+        del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
+    
+    test_I.time = time_tot
+    test_I.dUx_tot = np.transpose(Ux_tot)
+    test_I.dUy_tot = np.transpose(Uy_tot)
+    test_I.dUz_tot = np.transpose(Uz_tot)
+    del time_tot, Ux_tot, Uy_tot, Uz_tot
+    print 'Plastic displacement of mode I test successfully extracted:'
+    odb.close()
+    dimensions.time_len = len(test_I.time)
+    #-------------------------------------------------------------------------------------------------
+    #                               Total field extraction   Mode II
+    #-------------------------------------------------------------------------------------------------
+    test_II = Container()
+    test_II.JobName = '%s_%s.odb' % (Job.II.PL.MonName , slip_suffix)
+    odb=openOdb(path=os.path.join(odbSrcSlip, test_II.JobName ))
+    Ux_tot   =[]
+    Uy_tot   =[]
+    Uz_tot   =[]
+    time_tot =[]
+    for i in range(1,n_act_steps+1):
+        step = 'Step-%d' %i
+        time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
+        if i == 1 :
+            Ux_tot   = np.transpose(Ux_tot_tmp)
+            Uy_tot   = np.transpose(Uy_tot_tmp)
+            Uz_tot   = np.transpose(Uz_tot_tmp)
+            time_tot = time_tmp
+            #theta_corr_Mix = theta_corr_tmp
+        else :  
+            time_tmp.pop(0)
+            time_tmp = [ x+ time_tot[-1] for x in time_tmp]
+            Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
+            Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
+            Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
+            time_tot += time_tmp
+        del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
+    test_II.time = time_tot
+    test_II.dUx_tot = np.transpose(Ux_tot)
+    test_II.dUy_tot = np.transpose(Uy_tot)
+    test_II.dUz_tot = np.transpose(Uz_tot)
+    del time_tot, Ux_tot, Uy_tot, Uz_tot
+    print 'Plastic displacement of mode II test successfully extracted:'
+    odb.close()
+    #-------------------------------------------------------------------------------------------------
+    #                               Total field extraction   Mode III
+    #-------------------------------------------------------------------------------------------------
+    test_III = Container()
+    test_III.JobName = '%s_%s.odb' % (Job.III.PL.MonName , slip_suffix)
+    odb=openOdb(path=os.path.join(odbSrcSlip, test_III.JobName ))
+    Ux_tot   =[]
+    Uy_tot   =[]
+    Uz_tot   =[]
+    time_tot =[]
+    for i in range(1,n_act_steps+1):
+        step = 'Step-%d' %i
+        time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
+        if i == 1 :
+            Ux_tot   = np.transpose(Ux_tot_tmp)
+            Uy_tot   = np.transpose(Uy_tot_tmp)
+            Uz_tot   = np.transpose(Uz_tot_tmp)
+            time_tot = time_tmp
+            #theta_corr_Mix = theta_corr_tmp
+        else :  
+            time_tmp.pop(0)
+            time_tmp = [ x+ time_tot[-1] for x in time_tmp]
+            Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
+            Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
+            Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
+            time_tot += time_tmp
+        del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
+    
+    test_III.time = time_tot
+    test_III.dUx_tot = np.transpose(Ux_tot)
+    test_III.dUy_tot = np.transpose(Uy_tot)
+    test_III.dUz_tot = np.transpose(Uz_tot)
+    del time_tot, Ux_tot, Uy_tot, Uz_tot
+    print 'Plastic displacement of mode III test successfully extracted:'
+    odb.close()
+    #-------------------------------------------------------------------------------------------------
+    #                         Save total fields
+    #-------------------------------------------------------------------------------------------------    
+    mode_order_list        = [  ['','','']   , ['I','II','III'] ]
+    mode_order_suffix_list = ['without_order', 'order_I_II_III' ]
+    for mode_order, mode_order_suffix in zip(mode_order_list, mode_order_suffix_list) :
+        ResultsDir_Order_Dependent = os.path.join(ResultsDir_Slip, mode_order_suffix)
+        if not os.path.exists(ResultsDir_Order_Dependent):
+            os.makedirs(ResultsDir_Order_Dependent)
+        if mode_order_suffix == 'without_order':
+            dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection(test_I , Uref.EL , dimensions)
+            dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection(test_II , Uref.EL , dimensions)
+            dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection(test_III , Uref.EL , dimensions)
+        else :
+            dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I   = Plastic_Field_Faces_Projection_Order_Dependent(test_I, mode_order , Uref.EL , dimensions)
+            dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II  = Plastic_Field_Faces_Projection_Order_Dependent(test_II, mode_order , Uref.EL , dimensions)
+            dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III = Plastic_Field_Faces_Projection_Order_Dependent(test_III, mode_order , Uref.EL , dimensions)
+        ##### Mode I
+        file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_I_%s' % suffix),'w') 
+        for t in range(len(test_I.time)-1):
+            file2.write('%30.20E   ' % test_I.time[t+1])
+            file2.write('%30.20E   ' % dKI_tild_I[t])
+            file2.write('%30.20E   ' % dKII_tild_I[t])
+            file2.write('%30.20E   ' % dKIII_tild_I[t])
+            file2.write(' \n' )
+        file2.close()
+        ##### Mode II
+        file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_II_%s' % suffix),'w') 
+        for t in range(len(test_II.time)-1):
+            file2.write('%30.20E   ' % test_II.time[t+1])
+            file2.write('%30.20E   ' % dKI_tild_II[t])
+            file2.write('%30.20E   ' % dKII_tild_II[t])
+            file2.write('%30.20E   ' % dKIII_tild_II[t])
+            file2.write(' \n' )
+        file2.close()
+        ##### Mode III
+        file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_III_%s' % suffix),'w') 
+        for t in range(len(test_III.time)-1):
+            file2.write('%30.20E   ' % test_III.time[t+1])
+            file2.write('%30.20E   ' % dKI_tild_III[t])
+            file2.write('%30.20E   ' % dKII_tild_III[t])
+            file2.write('%30.20E   ' % dKIII_tild_III[t])
+            file2.write(' \n' )
+        file2.close()
+        #-------------------------------------------------------------------------------------------------
+        #                         Save plastic fields
+        #-------------------------------------------------------------------------------------------------
+        Order          = Container()
+        Order.dUPL     = Container()
+        Order.dUPL.I   = Container()
+        Order.dUPL.II  = Container()
+        Order.dUPL.III = Container()
+        Order.dUPL.I.time  , Order.dUPL.I.x  , Order.dUPL.I.y  , Order.dUPL.I.z  , Order.dUPL.I.dKI_tild  ,  Order.dUPL.I.dKII_tild  ,  Order.dUPL.I.dKIII_tild   = test_I.time  , dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I
+        Order.dUPL.II.time , Order.dUPL.II.x , Order.dUPL.II.y , Order.dUPL.II.z , Order.dUPL.II.dKI_tild ,  Order.dUPL.II.dKII_tild ,  Order.dUPL.II.dKIII_tild  = test_II.time , dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II
+        Order.dUPL.III.time, Order.dUPL.III.x, Order.dUPL.III.y, Order.dUPL.III.z, Order.dUPL.III.dKI_tild,  Order.dUPL.III.dKII_tild,  Order.dUPL.III.dKIII_tild = test_III.time, dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III
+        Order.dUPL.I.Loading_range   = Job.I.PL.MonKI_range
+        Order.dUPL.II.Loading_range  = Job.II.PL.MonKII_range
+        Order.dUPL.III.Loading_range = Job.III.PL.MonKIII_range
+        file2=open(os.path.join( ResultsDir_Order_Dependent,'Plastic_Field_%s_%s.p' % (mode_order_suffix, suffix ) ),'wb')
+        pickle.dump(Order, file2)
+        file2.close()
+    file2=open(os.path.join( ResultsDir_Slip,'Test_I_%s_%s.p' %  (suffix, slip_suffix) ),'wb')
+    pickle.dump(test_I, file2)
     file2.close()
-    ##### Mode II
-    file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_II_%s' % suffix),'w') 
-    for t in range(len(test_II.time)-1):
-        file2.write('%30.20E   ' % test_II.time[t+1])
-        file2.write('%30.20E   ' % dKI_tild_II[t])
-        file2.write('%30.20E   ' % dKII_tild_II[t])
-        file2.write('%30.20E   ' % dKIII_tild_II[t])
-        file2.write(' \n' )
+    file2=open(os.path.join( ResultsDir_Slip,'Test_II_%s_%s.p' %  (suffix, slip_suffix) ),'wb')
+    pickle.dump(test_II, file2)
     file2.close()
-    ##### Mode III
-    file2=open(os.path.join( ResultsDir_Order_Dependent,'plot_dK_III_%s' % suffix),'w') 
-    for t in range(len(test_III.time)-1):
-        file2.write('%30.20E   ' % test_III.time[t+1])
-        file2.write('%30.20E   ' % dKI_tild_III[t])
-        file2.write('%30.20E   ' % dKII_tild_III[t])
-        file2.write('%30.20E   ' % dKIII_tild_III[t])
-        file2.write(' \n' )
+    file2=open(os.path.join( ResultsDir_Slip,'Test_III_%s_%s.p' %  (suffix, slip_suffix) ),'wb')
+    pickle.dump(test_III, file2)
     file2.close()
     #-------------------------------------------------------------------------------------------------
-    #                         Save plastic fields
+    #                               Total filed extraction   Mixed Mode
     #-------------------------------------------------------------------------------------------------
-    Order          = Container()
-    Order.dUPL     = Container()
-    Order.dUPL.I   = Container()
-    Order.dUPL.II  = Container()
-    Order.dUPL.III = Container()
-    Order.dUPL.I.time  , Order.dUPL.I.x  , Order.dUPL.I.y  , Order.dUPL.I.z  , Order.dUPL.I.dKI_tild  ,  Order.dUPL.I.dKII_tild  ,  Order.dUPL.I.dKIII_tild   = test_I.time  , dUx_PL_I  , dUy_PL_I  , dUz_PL_I  , dKI_tild_I  , dKII_tild_I  , dKIII_tild_I
-    Order.dUPL.II.time , Order.dUPL.II.x , Order.dUPL.II.y , Order.dUPL.II.z , Order.dUPL.II.dKI_tild ,  Order.dUPL.II.dKII_tild ,  Order.dUPL.II.dKIII_tild  = test_II.time , dUx_PL_II , dUy_PL_II , dUz_PL_II , dKI_tild_II , dKII_tild_II , dKIII_tild_II
-    Order.dUPL.III.time, Order.dUPL.III.x, Order.dUPL.III.y, Order.dUPL.III.z, Order.dUPL.III.dKI_tild,  Order.dUPL.III.dKII_tild,  Order.dUPL.III.dKIII_tild = test_III.time, dUx_PL_III, dUy_PL_III, dUz_PL_III, dKI_tild_III, dKII_tild_III, dKIII_tild_III
-    Order.dUPL.I.Loading_range   = Job.I.PL.MonKI_range
-    Order.dUPL.II.Loading_range  = Job.II.PL.MonKII_range
-    Order.dUPL.III.Loading_range = Job.III.PL.MonKIII_range
-    file2=open(os.path.join( ResultsDir_Order_Dependent,'Plastic_Field_%s_%s.p' % (mode_order_suffix, suffix ) ),'wb')
-    pickle.dump(Order, file2)
+    '''
+    test_Mix = Container()
+    test_Mix.JobName = '%s_%s.odb' % (Job.Mix.PL.MonName , slip_suffix)
+    odb=openOdb(path=os.path.join(odbSrcSlip, test_Mix.JobName ))
+    Ux_tot   =[]
+    Uy_tot   =[]
+    Uz_tot   =[]
+    time_tot =[]
+    for i in range(1,n_act_steps+1):
+        step = 'Step-%d' %i
+        time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
+        if i == 1 :
+            Ux_tot   = np.transpose(Ux_tot_tmp)
+            Uy_tot   = np.transpose(Uy_tot_tmp)
+            Uz_tot   = np.transpose(Uz_tot_tmp)
+            time_tot = time_tmp
+            #theta_corr_Mix = theta_corr_tmp
+        else :  
+            time_tmp.pop(0)
+            time_tmp = [ x+ time_tot[-1] for x in time_tmp]
+            Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
+            Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
+            Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
+            time_tot += time_tmp
+        del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
+    
+    test_Mix.time = time_tot
+    test_Mix.dUx_tot = np.transpose(Ux_tot)
+    test_Mix.dUy_tot = np.transpose(Uy_tot)
+    test_Mix.dUz_tot = np.transpose(Uz_tot)
+    del time_tot, Ux_tot, Uy_tot, Uz_tot
+    print 'Plastic displacement of mode III test successfully extracted:'
+    odb.close()
+    test_Mix.MonKI_range   = Job.Mix.PL.MonKI_range  
+    test_Mix.MonKII_range  = Job.Mix.PL.MonKII_range
+    test_Mix.MonKIII_range = Job.Mix.PL.MonKIII_range
+    #-------------------------------------------------------------------------------------------------
+    #                         Save total fields
+    #-------------------------------------------------------------------------------------------------
+    file2=open(os.path.join( ResultsDir,'Test_Mix_%s_%s.p' %  (suffix, slip_suffix) ),'wb')
+    pickle.dump(test_Mix, file2)
     file2.close()
+    '''
 
-
-#-------------------------------------------------------------------------------------------------
-#                               Total filed extraction   Mixed Mode
-#-------------------------------------------------------------------------------------------------
-
-test_Mix = Container()
-
-test_Mix.JobName = Job.Mix.PL.MonName  + '.odb'
-
-odb=openOdb(path=os.path.join(odbSrcLGEOM, test_Mix.JobName ))
-
-Ux_tot   =[]
-Uy_tot   =[]
-Uz_tot   =[]
-time_tot =[]
-
-for i in range(1,n_act_steps+1):
-    step = 'Step-%d' %i
-    time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp = Extract_Total_Disp_History_Output(odb,step, dimensions)
-    if i == 1 :
-        Ux_tot   = np.transpose(Ux_tot_tmp)
-        Uy_tot   = np.transpose(Uy_tot_tmp)
-        Uz_tot   = np.transpose(Uz_tot_tmp)
-        time_tot = time_tmp
-        #theta_corr_Mix = theta_corr_tmp
-    else :  
-        time_tmp.pop(0)
-        time_tmp = [ x+ time_tot[-1] for x in time_tmp]
-        Ux_tot = np.concatenate((Ux_tot, np.transpose(Ux_tot_tmp)))
-        Uy_tot = np.concatenate((Uy_tot, np.transpose(Uy_tot_tmp)))
-        Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
-        time_tot += time_tmp
-    del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
-
-test_Mix.time = time_tot
-test_Mix.dUx_tot = np.transpose(Ux_tot)
-test_Mix.dUy_tot = np.transpose(Uy_tot)
-test_Mix.dUz_tot = np.transpose(Uz_tot)
-
-del time_tot, Ux_tot, Uy_tot, Uz_tot
-
-print 'Plastic displacement of mode III test successfully extracted:'
-
-odb.close()
-
-test_Mix.MonKI_range   = Job.Mix.PL.MonKI_range  
-test_Mix.MonKII_range  = Job.Mix.PL.MonKII_range
-test_Mix.MonKIII_range = Job.Mix.PL.MonKIII_range
-
-#-------------------------------------------------------------------------------------------------
-#                         Save total fields
-#-------------------------------------------------------------------------------------------------
-
-file2=open(os.path.join( ResultsDir,'Test_I_%s.p' %  suffix ),'wb')
-pickle.dump(test_I, file2)
-file2.close()
-
-file2=open(os.path.join( ResultsDir,'Test_II_%s.p' %  suffix ),'wb')
-pickle.dump(test_II, file2)
-file2.close()
-
-file2=open(os.path.join( ResultsDir,'Test_III_%s.p' %  suffix ),'wb')
-pickle.dump(test_III, file2)
-file2.close()
-
-file2=open(os.path.join( ResultsDir,'Test_Mix_%s.p' %  suffix ),'wb')
-pickle.dump(test_Mix, file2)
-file2.close()
-
-'''

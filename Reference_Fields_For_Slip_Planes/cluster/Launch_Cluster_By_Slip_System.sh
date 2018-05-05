@@ -52,4 +52,6 @@ mkdir -p $out_folder_gnode
 
 rsync -rtv $temp_folder/${slip_suffix}/ $out_folder_gnode/
 
+rm -r $temp_folder/${slip_suffix}
+
 #scp -r $out_folder_gnode/${inp_folder} $ou_folder_local/

@@ -4,7 +4,7 @@ hkl=(0 1 0)
 uvw=(1 0 0)
 mode_list=("I" "II" "III")
 #slip_systems_list=("b4" "b2" "b5" "d4" "d1" "d6" "a2" "a6" "a3" "c5" "c3" "c1")
-slip_systems_list=("b4" "b2")
+slip_systems_list=("a3" "c5")
 
 PBS_file=Launch_Cluster_By_Slip_System.sh
 for slip_suffix in ${slip_systems_list[@]}
@@ -31,7 +31,6 @@ do
 		sed -i -e "s/${to_find}/${replace_by}/g" ${PBS_file_New}		
 		### launch computation
 		qsub ${PBS_file_New}
-		#rm ${PBS_file_New}
 	done
 done
 
