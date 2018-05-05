@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# File for transfer to and from cluster local disk
+
+
+
+# change in and out folder only
+
+# folder is deleted on cluster after end
+
+#######PBS -l nodes=1:ppn=4:NODE59
+#PBS -l nodes=1:ppn=12
+##### PBS -l nodes=6:ppn=16
+#PBS -l walltime=20:00:00
+#PBS -V
+#PBS -l vmem=50gb
+########PBS -l software=abaqus:12
+#PBS -k eo
+
+
+hkl_list=(0 1 0)
+uvw_list=(1 0 0)
+
+mode=III
+
+suffix=${hkl_list[0]}${hkl_list[1]}${hkl_list[2]}_${uvw_list[0]}${uvw_list[1]}${uvw_list[2]}
+slip_suffix=b4
+
+inp_folder=inp_files_${suffix}
+in_folder=/u/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/
+
+cat $PBS_NODEFILE > ${in_folder}/nodelist_$PBS_JOBID
+
+out_folder_gnode=/data6/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/${slip_suffix}
+out_folder_local=tezeghdanti@cremant:/usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes/${inp_folder}/${slip_suffix}
+today_dir=$(date +%F)
+temp_folder=/usrtmp/tezeghdanti/$today_dir
+
+echo $(hostname)
+
+mkdir -p ${temp_folder}
+
+cp -r $in_folder  $temp_folder
+
+cd $temp_folder/${inp_folder}/${slip_suffix}
+
+####source ~zebulon/Z8.7/do_config.sh
+
+JobName=$(sed -n 1p EP_job_details_${mode}.txt)
+
+NewJobName="${JobName}_${slip_suffix}.inp"
+
+source /u/gosselet/Z8.6/do_config.sh
+
+Zmat cpus=10 memory=32gb ${NewJobName}
+
+echo "#########################Resync to origin################"
+
+mkdir -p $out_folder_gnode
+
+#rsync -rtv $temp_folder/${inp_folder}/ $out_folder_gnode/
+
+#scp -r $out_folder_gnode/${inp_folder} $ou_folder_local/

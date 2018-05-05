@@ -132,33 +132,33 @@ file2.close()
 
 # Test parameters:
 
-KI_range_I   = [ 12.]
-KII_range_I  = [  0.]
-KIII_range_I = [  0.]
+KI_range_I   = [ 50. ]
+KII_range_I  = [  0. ]
+KIII_range_I = [  0. ]
 
 PLTest_I 	 = { 'name' : 'EP', 'test_type' : 'Mon', 'NLGEOM': False ,
 				'loading_type' : loading_type, 'KI_range' : KI_range_I , 
 				'KII_range' : KII_range_I, 'KIII_range' : KIII_range_I }
 
-KI_range_II   = [  0.5 ]
-KII_range_II  = [   7. ]
-KIII_range_II = [   0. ]
+KI_range_II   = [ 0.5 ]
+KII_range_II  = [ 25. ]
+KIII_range_II = [  0. ]
 
 PLTest_II 	 = { 'name' : 'EP', 'test_type' : 'Mon', 'NLGEOM': False ,
 				'loading_type' : loading_type, 'KI_range' : KI_range_II, 
 				'KII_range' : KII_range_II, 'KIII_range' : KIII_range_II }
 
-KI_range_III   = [   0.5]
-KII_range_III  = [   0. ]
-KIII_range_III = [   7.]
+KI_range_III   = [ 0.5 ]
+KII_range_III  = [  0. ]
+KIII_range_III = [ 25. ]
 
 PLTest_III 	 = { 'name' : 'EP', 'test_type' : 'Mon', 'NLGEOM': False ,
 				'loading_type' : loading_type, 'KI_range' : KI_range_III, 
 				'KII_range' : KII_range_III, 'KIII_range' : KIII_range_III }
 
-KI_range_Mix   = [  10.]
-KII_range_Mix  = [  6.]
-KIII_range_Mix = [  4.]
+KI_range_Mix   = [ 25. ]
+KII_range_Mix  = [ 14. ]
+KIII_range_Mix = [  8. ]
 
 PLTest_Mix 	 = { 'name' : 'EP', 'test_type' : 'Mon', 'NLGEOM': False ,
 				'loading_type' : loading_type, 'KI_range' : KI_range_Mix, 

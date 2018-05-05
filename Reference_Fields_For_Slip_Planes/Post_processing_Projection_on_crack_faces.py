@@ -49,8 +49,8 @@ R1 = 'Results_Post_Proc'
 R2 =  loading_type
 R3 = 'Results_Post_Proc_octahedral'
 R4 = 'Results_Post_Proc_%s' % (suffix )
-R5 = 'Small_Loading'
-R6 = 'Projection_On_Crack_Faces'
+R5 = 'AM1_20'
+R6 = 'b4'
 
 ResultsDir = os.path.join(R1, R2, R3, R4, R5)
 if not os.path.exists(ResultsDir):
@@ -349,7 +349,7 @@ Uref.EL.II.radial  = dimensions.radial
 Uref.EL.III.radial = dimensions.radial
 
 
-file2=open(os.path.join( ResultsDir_New,'Uref_EL_%s.p' %  suffix ),'wb')
+file2=open(os.path.join( ResultsDir,'Uref_EL_%s.p' %  suffix ),'wb')
 pickle.dump(Uref, file2)
 file2.close()
 
@@ -373,7 +373,7 @@ dimensions.time_len = len(test_I.time)
 #-------------------------------------------------------------------------------------------------
 #                               Total field extraction   Mode I
 #-------------------------------------------------------------------------------------------------
-
+'''
 n_act_steps = 1
 
 test_I = Container()
@@ -641,4 +641,4 @@ file2=open(os.path.join( ResultsDir,'Test_Mix_%s.p' %  suffix ),'wb')
 pickle.dump(test_Mix, file2)
 file2.close()
 
-
+'''
