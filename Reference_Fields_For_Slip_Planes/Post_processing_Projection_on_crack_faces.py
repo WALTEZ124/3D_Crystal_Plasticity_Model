@@ -15,6 +15,7 @@ import numpy as np
 from driverUtils import executeOnCaeStartup
 executeOnCaeStartup()
 
+Pi=acos(-1.)
 
 coef_I   = 1.
 coef_II  = 1.
