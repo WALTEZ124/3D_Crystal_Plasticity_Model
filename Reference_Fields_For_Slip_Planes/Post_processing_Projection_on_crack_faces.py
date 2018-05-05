@@ -16,6 +16,10 @@ from driverUtils import executeOnCaeStartup
 executeOnCaeStartup()
 
 
+coef_I   = 1.
+coef_II  = 1.
+coef_III = 1.
+
 #codeSrc = os.path.join('..','..','Code','Verify_material_orientation_Zmat_Abaqus')
 codeSrc = '.'
 odbDir = 'Results_Odb'
