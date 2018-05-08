@@ -1,8 +1,8 @@
 #!/bin/bash
 
 ## Input material orientation
-hkl_list=(0 1 0)
-uvw_list=(1 0 0)
+hkl_list=(1 1 1)
+uvw_list=(-1 1 0)
 
 ## Modify the Input File (for file names)
 sed -i -e "s/	hkl =.*/	hkl = np.asarray([ ${hkl_list[0]}, ${hkl_list[1]}, ${hkl_list[2]}])/" Input_Computation.py
