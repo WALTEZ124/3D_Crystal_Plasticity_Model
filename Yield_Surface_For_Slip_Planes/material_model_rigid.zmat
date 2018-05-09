@@ -1,0 +1,6 @@
+***material
+***behavior linear_elastic
+ **elasticity isotropic
+   young 2.e7
+   poisson 0.3
+***return
