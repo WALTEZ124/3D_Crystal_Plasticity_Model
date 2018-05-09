@@ -369,6 +369,7 @@ for slip_suffix in slip_systems_list :
     #-------------------------------------------------------------------------------------------------
     #                               Total field extraction   Mode I
     #-------------------------------------------------------------------------------------------------
+    os.system('echo slip system %s mode I:' % (slip_suffix) )
     test_I = Container()
     test_I.JobName = '%s_%s.odb' % (Job.I.PL.MonName , slip_suffix)
     odb=openOdb(path=os.path.join(odbSrcSlip, test_I.JobName ))
@@ -393,18 +394,29 @@ for slip_suffix in slip_systems_list :
             Uz_tot = np.concatenate((Uz_tot, np.transpose(Uz_tot_tmp)))
             time_tot += time_tmp
         del time_tmp, Ux_tot_tmp, Uy_tot_tmp, Uz_tot_tmp
-    
     test_I.time = time_tot
     test_I.dUx_tot = np.transpose(Ux_tot)
     test_I.dUy_tot = np.transpose(Uy_tot)
     test_I.dUz_tot = np.transpose(Uz_tot)
     del time_tot, Ux_tot, Uy_tot, Uz_tot
-    print 'Plastic displacement of mode I test successfully extracted:'
+    os.system('echo slip system %s mode I: Total displacement successfully extracted' % (slip_suffix) )
+    time , EV1_Cum_tot, EV1_Cum_moy, EV1_Cum_quad = Extract_Cumulated_Strain_Field_Output(odb,'Step-1', dimensions)
     odb.close()
+    file2=open(os.path.join( ResultsDir_Slip,'EV1_Cum_moy_%s' % ( Job.I.PL.MonName ) ),'w') 
+    file2.write('time ,  EV1 Cum arithmetic mean, EV1 Cum quadratic mean')
+    file2.write(' \n' )
+    for t in range(len(time)):
+        file2.write('%30.20E   ' % time[t])
+        file2.write('%30.20E   ' % EV1_Cum_moy[t])
+        file2.write('%30.20E   ' % EV1_Cum_quad[t])
+        file2.write(' \n' )
+    file2.close()    
+    os.system('echo slip system %s mode I: EV1 cumulated successfully extracted' % (slip_suffix) )
     dimensions.time_len = len(test_I.time)
     #-------------------------------------------------------------------------------------------------
     #                               Total field extraction   Mode II
     #-------------------------------------------------------------------------------------------------
+    os.system('echo slip system %s mode II:' % (slip_suffix) )
     test_II = Container()
     test_II.JobName = '%s_%s.odb' % (Job.II.PL.MonName , slip_suffix)
     odb=openOdb(path=os.path.join(odbSrcSlip, test_II.JobName ))
@@ -434,11 +446,23 @@ for slip_suffix in slip_systems_list :
     test_II.dUy_tot = np.transpose(Uy_tot)
     test_II.dUz_tot = np.transpose(Uz_tot)
     del time_tot, Ux_tot, Uy_tot, Uz_tot
-    print 'Plastic displacement of mode II test successfully extracted:'
+    os.system('echo slip system %s mode II: Total displacement successfully extracted' % (slip_suffix) )
+    time , EV1_Cum_tot, EV1_Cum_moy, EV1_Cum_quad = Extract_Cumulated_Strain_Field_Output(odb,'Step-1', dimensions)
     odb.close()
+    file2=open(os.path.join( ResultsDir_Slip,'EV1_Cum_moy_%s' % ( Job.II.PL.MonName ) ),'w') 
+    file2.write('time ,  EV1 Cum arithmetic mean, EV1 Cum quadratic mean')
+    file2.write(' \n' )
+    for t in range(len(time)):
+        file2.write('%30.20E   ' % time[t])
+        file2.write('%30.20E   ' % EV1_Cum_moy[t])
+        file2.write('%30.20E   ' % EV1_Cum_quad[t])
+        file2.write(' \n' )
+    file2.close()  
+    os.system('echo slip system %s mode II: EV1 cumulated successfully extracted' % (slip_suffix) )  
     #-------------------------------------------------------------------------------------------------
     #                               Total field extraction   Mode III
     #-------------------------------------------------------------------------------------------------
+    os.system('echo slip system %s mode III:' % (slip_suffix) )
     test_III = Container()
     test_III.JobName = '%s_%s.odb' % (Job.III.PL.MonName , slip_suffix)
     odb=openOdb(path=os.path.join(odbSrcSlip, test_III.JobName ))
@@ -469,8 +493,19 @@ for slip_suffix in slip_systems_list :
     test_III.dUy_tot = np.transpose(Uy_tot)
     test_III.dUz_tot = np.transpose(Uz_tot)
     del time_tot, Ux_tot, Uy_tot, Uz_tot
-    print 'Plastic displacement of mode III test successfully extracted:'
+    os.system('echo slip system %s mode III: Total displacement successfully extracted' % (slip_suffix) )
+    time , EV1_Cum_tot, EV1_Cum_moy, EV1_Cum_quad = Extract_Cumulated_Strain_Field_Output(odb,'Step-1', dimensions)
     odb.close()
+    file2=open(os.path.join( ResultsDir_Slip,'EV1_Cum_moy_%s' % ( Job.III.PL.MonName ) ),'w') 
+    file2.write('time ,  EV1 Cum arithmetic mean, EV1 Cum quadratic mean')
+    file2.write(' \n' )
+    for t in range(len(time)):
+        file2.write('%30.20E   ' % time[t])
+        file2.write('%30.20E   ' % EV1_Cum_moy[t])
+        file2.write('%30.20E   ' % EV1_Cum_quad[t])
+        file2.write(' \n' )
+    file2.close() 
+    os.system('echo slip system %s mode III: EV1 cumulated successfully extracted' % (slip_suffix) )
     #-------------------------------------------------------------------------------------------------
     #                         Save total fields
     #-------------------------------------------------------------------------------------------------    
@@ -541,6 +576,7 @@ for slip_suffix in slip_systems_list :
     file2=open(os.path.join( ResultsDir_Slip,'Test_III_%s_%s.p' %  (suffix, slip_suffix) ),'wb')
     pickle.dump(test_III, file2)
     file2.close()
+    os.system('echo slip system %s: Total and plastic fields successfully dumped :p (pickle dump)' % (slip_suffix) )
     #-------------------------------------------------------------------------------------------------
     #                               Total filed extraction   Mixed Mode
     #-------------------------------------------------------------------------------------------------

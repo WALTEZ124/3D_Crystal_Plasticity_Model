@@ -104,7 +104,6 @@ for slip_suffix in slip_systems_list :
     	JobName = '%s_%s' % (eval('Job.%s.PL.MonName'% mode) , slip_suffix)
     	odb=openOdb(path=os.path.join(odbSrcSlip, '%s.odb' %JobName ))
     	time , EV1_Cum_tot, EV1_Cum_moy, EV1_Cum_quad = Extract_Cumulated_Strain_Field_Output(odb,'Step-1', dimensions)
-    	print 'Plastic displacement of mode I test successfully extracted:'
     	odb.close()
     	file2=open(os.path.join( ResultsDir_Slip,'EV1_Cum_moy_%s' % ( JobName ) ),'w') 
     	file2.write('time ,  EV1 Cum arithmetic mean, EV1 Cum quadratic mean')

@@ -21,8 +21,8 @@ class Container(object):
     def __init__(self):
         pass
 
-hkl = [0,1,0]
-uvw = [1,0,0]
+hkl = [1,1,1]
+uvw = [-1,1,0]
 
 Shkl = "%d%d%d" % (hkl[0], hkl[1], hkl[2])
 Suvw = "%d%d%d" % (uvw[0], uvw[1], uvw[2])

@@ -36,8 +36,8 @@ hardening_type = 'nonlinear-combined-hardening'
 if elasticity_type == 'orthotropic' :
 	#-------------------------------------
 	# Miller indices: Input variables
-	hkl = np.asarray([ 0, 1, 0])
-	uvw = np.asarray([ 1, 0, 0])
+	hkl = np.asarray([ 1, 1, 1])
+	uvw = np.asarray([ -1, 1, 0])
 	#-------------------------------------
 	qrs = np.cross(hkl, uvw)
 	Nhkl = np.linalg.norm(hkl)
