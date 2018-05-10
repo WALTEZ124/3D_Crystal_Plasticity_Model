@@ -36,8 +36,8 @@ hardening_type = 'nonlinear-combined-hardening'
 if elasticity_type == 'orthotropic' :
 	#-------------------------------------
 	# Miller indices: Input variables
-	hkl = np.asarray([ 1, 1, 1])
-	uvw = np.asarray([ -1, 1, 0])
+	hkl = np.asarray([ 0, 1, 0])
+	uvw = np.asarray([ 1, 0, 0])
 	#-------------------------------------
 	qrs = np.cross(hkl, uvw)
 	Nhkl = np.linalg.norm(hkl)
@@ -154,16 +154,7 @@ class Plastic():
 #          Call functions
 #---------------------------------------------------------------------------------
 
-srcFile = os.path.join(compSrc, 'moveFiles_func.py')
-execfile(srcFile)
-
-srcFile = os.path.join(compSrc,'Compute.py')
-execfile(srcFile)
-
-srcFile = os.path.join(compSrc,'Generate_names.py')
-execfile(srcFile)
-
-srcFile = os.path.join(compSrc,'K_nominals_Extraction.py')
+srcFile = os.path.join(compSrc,'Write_INP.py')
 execfile(srcFile)
 
 srcFile = os.path.join(compSrc,'SIF_To_Force.py')

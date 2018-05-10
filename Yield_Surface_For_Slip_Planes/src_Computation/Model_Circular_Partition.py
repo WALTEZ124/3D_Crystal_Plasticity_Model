@@ -580,7 +580,7 @@ mdb.models['Model-1'].fieldOutputRequests['F-Output-1'].suppress()
 regionDef=mdb.models['Model-1'].rootAssembly.sets['FULL-CRACK-FIELD-RIGHT']
 
 mdb.models['Model-1'].FieldOutputRequest(name='FIELD-DISP-RIGHT',createStepName='Step-1',
-    variables=('S', 'U', 'E','PEEQ','SDV'), frequency=1, region=regionDef )
+    variables=('S', 'U', 'E','SDV'), frequency=1, region=regionDef )
 
 '''
 regionDef=mdb.models['Model-1'].rootAssembly.sets['LINE-RIGHT']
