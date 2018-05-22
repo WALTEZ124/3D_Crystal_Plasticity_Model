@@ -126,36 +126,10 @@ Job_Star.I_II.KII_init_range  = KII_init_range
 Job_Star.I_II.KIII_init_range = KIII_init_range
 
 
-file2=open('Star_job_details_I_II.txt','w') 
+file2=open('Star_init_job_details_I_II.txt','w') 
 file2.write('%s\n' % Init_JobName_I_II ) 
-
-n_exp_dir = 8
-Explored_Directions = [ n*360./n_exp_dir for n in range(n_exp_dir) ]
-
-Sec_JobNames_list = []
-KI_sec_range   = []
-KII_sec_range  = []
-KIII_sec_range = []
-
-for sec_prop_angle in Explored_Directions :
-	KI_sec   =  KI_Center  + KRadius*np.sin( sec_prop_angle*np.pi/180 ) 
-	KII_sec  =  KII_Center + KRadius*np.cos( sec_prop_angle*np.pi/180 ) 
-	KIII_sec =  0.
-	PL_Sec_Test_I_II = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
-				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
-	Sec_JobName_I_II, Sec_Description_I_II = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_II , PL_Sec_Test_I_II, PL_Star_Job, Param, elastic)
-	file2.write('%s\n' % Sec_JobName_I_II ) 
-	Sec_JobNames_list += [Sec_JobName_I_II]
-	KI_sec_range   += [KI_sec]
-	KII_sec_range  += [KII_sec]
-	KIII_sec_range += [KIII_sec]
-
 file2.close()
 
-Job_Star.I_II.Sec_JobNames_list = Sec_JobNames_list
-Job_Star.I_II.KI_sec_range   = KI_sec_range
-Job_Star.I_II.KII_sec_range  = KII_sec_range
-Job_Star.I_II.KIII_sec_range = KIII_sec_range
 
 #:--------------------
 #     Plane I-III
@@ -186,36 +160,9 @@ Job_Star.I_III.KI_init_range   = KI_init_range
 Job_Star.I_III.KII_init_range  = KII_init_range
 Job_Star.I_III.KIII_init_range = KIII_init_range
 
-file2=open('Star_job_details_I_III.txt','w') 
+file2=open('Star_init_job_details_I_III.txt','w') 
 file2.write('%s\n' % Init_JobName_I_III ) 
-
-n_exp_dir = 8
-Explored_Directions = [ n*360./n_exp_dir for n in range(n_exp_dir) ]
-
-Sec_JobNames_list = []
-KI_sec_range   = []
-KII_sec_range  = []
-KIII_sec_range = []
-
-for sec_prop_angle in Explored_Directions :
-	KI_sec   =  KI_Center  + KRadius * np.sin( sec_prop_angle*np.pi/180 ) 
-	KII_sec  =  0. 
-	KIII_sec =  KIII_Center + KRadius * np.cos( sec_prop_angle*np.pi/180 ) 
-	PL_Sec_Test_I_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
-				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
-	Sec_JobName_I_III, Sec_Description_I_III = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_III , PL_Sec_Test_I_III, PL_Star_Job, Param, elastic)
-	file2.write('%s\n' % Sec_JobName_I_III ) 
-	Sec_JobNames_list += [Sec_JobName_I_III]
-	KI_sec_range   += [KI_sec]
-	KII_sec_range  += [KII_sec]
-	KIII_sec_range += [KIII_sec]
-
 file2.close()
-
-Job_Star.I_III.Sec_JobNames_list = Sec_JobNames_list
-Job_Star.I_III.KI_sec_range   = KI_sec_range
-Job_Star.I_III.KII_sec_range  = KII_sec_range
-Job_Star.I_III.KIII_sec_range = KIII_sec_range
 
 #:--------------------
 #     Plane II-III
@@ -246,39 +193,7 @@ Job_Star.II_III.KI_init_range   = KI_init_range
 Job_Star.II_III.KII_init_range  = KII_init_range
 Job_Star.II_III.KIII_init_range = KIII_init_range
 
-file2=open('Star_job_details_II_III.txt','w') 
+file2=open('Star_init_job_details_II_III.txt','w') 
 file2.write('%s\n' % Init_JobName_II_III ) 
-
-n_exp_dir = 8
-Explored_Directions = [ n*360./n_exp_dir for n in range(n_exp_dir) ]
-
-Sec_JobNames_list = []
-KI_sec_range   = []
-KII_sec_range  = []
-KIII_sec_range = []
-
-for sec_prop_angle in Explored_Directions :
-	KI_sec   =  0.5
-	KII_sec  =  KII_Center  + KRadius * np.sin( sec_prop_angle*np.pi/180 ) 
-	KIII_sec =  KIII_Center + KRadius * np.cos( sec_prop_angle*np.pi/180 ) 
-	PL_Sec_Test_II_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
-				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
-	Sec_JobName_II_III, Sec_Description_II_III = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_III , PL_Sec_Test_II_III, PL_Star_Job, Param, elastic)
-	file2.write('%s\n' % Sec_JobName_II_III ) 
-	Sec_JobNames_list += [Sec_JobName_II_III]
-	KI_sec_range   += [KI_sec]
-	KII_sec_range  += [KII_sec]
-	KIII_sec_range += [KIII_sec]
-
-file2.close()
-
-Job_Star.II_III.Sec_JobNames_list = Sec_JobNames_list
-Job_Star.II_III.KI_sec_range   = KI_sec_range
-Job_Star.II_III.KII_sec_range  = KII_sec_range
-Job_Star.II_III.KIII_sec_range = KIII_sec_range
-
-
-file2=open(os.path.join( odbSrc,'Star_Job_Parameters_%s.p' %  suffix),'wb')
-pickle.dump(Job_Star, file2)
 file2.close()
 

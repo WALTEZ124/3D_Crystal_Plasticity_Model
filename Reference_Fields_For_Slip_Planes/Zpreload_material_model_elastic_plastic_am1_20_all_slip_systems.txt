@@ -1,0 +1,179 @@
+ Std path: /u/zebulon/Z8.6/PUBLIC/lib-Linux_64
+
+   std 0 /u/zebulon/Z8.6/PUBLIC/lib-Linux_64/libZwxwindows.so Done.
+   std 1 /u/zebulon/Z8.6/PUBLIC/lib-Linux_64/libZMumps.so
+    --> failed to load library: libdmumps-4.10.0.so: cannot open shared object file: No such file or directory
+ Done.
+   std 2 /u/zebulon/Z8.6/PUBLIC/lib-Linux_64/libZOpenGL.so Done.
+   std 3 /u/zebulon/Z8.6/PUBLIC/lib-Linux_64/libZmed.so Done.
+   std 4 /u/zebulon/Z8.6/PUBLIC/lib-Linux_64/libZSandbox.so Done.
+
+ All plugins are up-to-date.
++++++++thread init 19742 139849044719424
+ Std path: /u/zebulon/Z8.6/PUBLIC/lib-Linux_64
+
+
+ All plugins are up-to-date.
+
+-----------------------------------------------------------------
+| Z-set version 8.6.8            compiled 2017-07-13 by zebulon |
+|                                SVN revision:14923M            |
+|                                                               |
+| MINES ParisTech                www.mines-paristech.fr         |
+| ONERA                          www.onera.fr                   |
+|                                                               |
+| Website                        www.zset-software.com          |
+-----------------------------------------------------------------
+
+EXEDIR0:/usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes
+
+ZEBULON thread #1 checked out zbb token
+
+ Shared library (plugin) loading:
+ Std path: /u/zebulon/Z8.6/PUBLIC/lib-Linux_64
+Looking for library files in: /u/zebulon/Z8.6/PUBLIC/lib-Linux_64 for suffix: .so
+  skipping libexplicitU-D.so
+Checking libZwxwindows.so against Zmat
+Checking libZOpenGL.so against Zmat
+Checking libZMumps.so against Zmat
+Checking libZmed.so against Zmat
+  skipping libZmat_base.so
+  skipping libZfem_base.so
+Checking libZSandbox.so against Zmat
+  skipping libansuser.so
+  skipping libexplicitU.so
+  skipping libstandardU.so
+Looking for library files in: /usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes for suffix: .so
+
+
+ All plugins are up-to-date.
+Load Z-mat **material_model_elastic_plastic_am1_20_all_slip_systems.zmat** dimen:3
+EXEDIR:/usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes
+Time_ini:0.00000
+Looking for file:/usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes/material_model_elastic_plastic_am1_20_all_slip_systems.zmat then:material_model_elastic_plastic_am1_20_all_slip_systems.zmat
+Zmat cmd:***material
+
+rot:
+  1.00000e+00  0.00000e+00  0.00000e+00
+  0.00000e+00  1.00000e+00  0.00000e+00
+  0.00000e+00  0.00000e+00  1.00000e+00Zmat cmd:***integration
+Zmat cmd:theta_method_a
+Zmat cmd:0.5
+Zmat cmd:1.e-9
+Zmat cmd:500
+Zmat cmd:***behavior
+Zmat cmd:***stepping_controls
+Zmat cmd:*full_step_jacobian
+Zmat cmd:*divergence
+Zmat cmd:2.0
+Zmat cmd:20
+Zmat cmd:*security
+Zmat cmd:1.5
+Zmat cmd:***return
+Reading behavior in file: /usrtmp/tezeghdanti/3D_Model_Crystal_Plasticity/Computation/Reference_Fields_For_Slip_Planes/material_model_elastic_plastic_am1_20_all_slip_systems.zmat 
+Automatic time modification of Material
+
+============================================
+Flux Name:
+  sig11  sig22  sig33  sig12  sig23  
+  sig31  
+
+Grad Name:
+  eto11  eto22  eto33  eto12  eto23  
+  eto31  
+
+var_int Name:
+  eel11  eel22  eel33  eel12  eel23  
+  eel31  
+  gamev1   gamev2   gamev3   gamev4   gamev5   
+  gamev6   gamev7   gamev8   gamev9   gamev10  
+  gamev11  gamev12  
+
+var_aux Name:
+  evi11  evi22  evi33  evi12  evi23  
+  evi31  
+  evcum1   evcum2   evcum3   evcum4   evcum5   
+  evcum6   evcum7   evcum8   evcum9   evcum10  
+  evcum11  evcum12  
+  evgeq  
+  aev1   aev2   aev3   aev4   aev5   
+  aev6   aev7   aev8   aev9   aev10  
+  aev11  aev12  
+
+Default Output:
+  eto11  eto22  eto33  eto12  eto23  
+  eto31  
+  sig11  sig22  sig33  sig12  sig23  
+  sig31  
+  evi11  evi22  evi33  evi12  evi23  
+  evi31  
+  gamev1   gamev2   gamev3   gamev4   gamev5   
+  gamev6   gamev7   gamev8   gamev9   gamev10  
+  gamev11  gamev12  
+  evcum1   evcum2   evcum3   evcum4   evcum5   
+  evcum6   evcum7   evcum8   evcum9   evcum10  
+  evcum11  evcum12  
+  evgeq  
+============================================
+
+============================================
+Flux Name:
+  sig11  sig22  sig33  sig12  sig23  
+  sig31  
+
+Grad Name:
+  eto11  eto22  eto33  eto12  eto23  
+  eto31  
+
+var_int Name:
+  eel11(sdv1) eel22(sdv2) eel33(sdv3) eel12(sdv4) eel23(sdv5) 
+  eel31(sdv6) 
+  gamev1(sdv7) gamev2(sdv8) gamev3(sdv9) gamev4(sdv10) gamev5(sdv11) 
+  gamev6(sdv12) gamev7(sdv13) gamev8(sdv14) gamev9(sdv15) gamev10(sdv16) 
+  gamev11(sdv17) gamev12(sdv18) 
+
+var_aux Name:
+  evi11(sdv19) evi22(sdv20) evi33(sdv21) evi12(sdv22) evi23(sdv23) 
+  evi31(sdv24) 
+  evcum1(sdv25) evcum2(sdv26) evcum3(sdv27) evcum4(sdv28) evcum5(sdv29) 
+  evcum6(sdv30) evcum7(sdv31) evcum8(sdv32) evcum9(sdv33) evcum10(sdv34) 
+  evcum11(sdv35) evcum12(sdv36) 
+  evgeq(sdv37) 
+  aev1(sdv38) aev2(sdv39) aev3(sdv40) aev4(sdv41) aev5(sdv42) 
+  aev6(sdv43) aev7(sdv44) aev8(sdv45) aev9(sdv46) aev10(sdv47) 
+  aev11(sdv48) aev12(sdv49) 
+============================================
+
+++ material limits ++
+
+done with material file reading...
+
+Temperature not needed...
+
+
+- ABAQUS ---------------------------------
+*MATERIAL,NAME=material_model_elastic_plastic_am1_20_all_slip_systems.zmat
+*DEPVAR
+  49
+*USER MATERIAL,CONSTANTS=1
+0.0
+------------------------------------------
+
+- ABAQUS Shells (run again with -d 2) ----
+*TRANSVERSE SHEAR STIFFNESS
+1.04167e+05*thick, 1.04167e+05*thick, 0.0
+------------------------------------------
+
+
+--LS Dyna --------------------------------
+*CONTROL_ACCURACY 
+0, 4
+*MAT_USER_DEFINED_MATERIAL_MODELS
+$      mid        ro        mt       lmc       nhv     iorth     ibulk        ig
+$    ivect     ifail  ithermal  ihyper  ieq_of_state
+$       p1        p2
+$
+1, XXXX, 41, 2, 55   , 0, 1, 2
+0, 0, 0, 0, 0
+ 2.347e+05,  1.250e+05
+------------------------------------------
