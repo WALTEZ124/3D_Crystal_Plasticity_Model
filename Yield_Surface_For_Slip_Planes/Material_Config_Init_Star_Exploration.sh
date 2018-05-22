@@ -72,9 +72,9 @@ abaqus_6.11-2 cae noGUI=Create_INP_file_Init_Star_Exploration.py
 
 ## Import JobName and sources' path from previous computation
 
-JobName_I_II=$(sed -n 1p Star_init_job_details_I_II.txt).inp
-JobName_I_III=$(sed -n 1p Star_init_job_details_I_III.txt).inp
-JobName_II_III=$(sed -n 1p Star_init_job_details_II_III.txt).inp
+JobName_I_II=$(sed -n 1p Star_init_job_details_I_II.txt)
+JobName_I_III=$(sed -n 1p Star_init_job_details_I_III.txt)
+JobName_II_III=$(sed -n 1p Star_init_job_details_II_III.txt)
 
 inp_folder="inp_files_${hkl_list[0]}${hkl_list[1]}${hkl_list[2]}_${uvw_list[0]}${uvw_list[1]}${uvw_list[2]}"
 
