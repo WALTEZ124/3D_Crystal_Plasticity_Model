@@ -94,7 +94,9 @@ do
 	material_file_elastic_plastic="material_model_elastic_plastic_${used_material}_${slip_suffix}.zmat"
 	cp "material_model_elastic_plastic_${used_material}.zmat" ${material_file_elastic_plastic}
 	sed -i -e "s/**potential.*/**potential plane ${slip_system}/" ${material_file_elastic_plastic}
+	echo "1"
 	Zpreload ${material_file_elastic_plastic} > "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt"
+	echo "2"
 	## Write INP files for elastic-plastic computation
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_${used_material}.txt" > material_def_inp.inp
 	grep -A 4 '*MATERIAL,NAME' "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" >> material_def_inp.inp
@@ -103,6 +105,7 @@ do
 	do
 		NewJobName="${JobName}_${slip_suffix}.inp"
 		cp "${JobName}.inp" $NewJobName
+		echo $NewJobName
 		## Insert the Zmat material configuration in the inp file
 		sed -i -e "s/material=Elastic-Plastic\s*$/material=${material_file_elastic_plastic}/" ${NewJobName}
 		sed -i -e "s/material=Elastic\s*$/material=${material_file_elastic}/" ${NewJobName}
@@ -115,15 +118,18 @@ do
 		sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.inp
 			}; /$end/p; d}" ${NewJobName}
 		sed -i '/**here/d' ${NewJobName}
+		echo "Material defined and inserted into ${NewJobName}.inp"
 		## Launch Job on Zmat
 		# To configurate Zebulon with abaqus_6.11-2
 		#source ~zebulon/Z8.7/do_config.sh 
 		#Zmat cpus=12 memory=16gb $NewJobName
 		mv ${NewJobName} ${inp_folder}/${slip_suffix}/
+		echo "file moved"
 	done
 	mv "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" ${inp_folder}/${slip_suffix}/
+	echo "Zpreload of ${slip_suffix} moved"
 	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
-	cp EP_job_details* ${inp_folder}/${slip_suffix}/
+	cp Star_init_job_details* ${inp_folder}/${slip_suffix}/
 	cp ${material_file_elastic} ${inp_folder}/${slip_suffix}/
 done
 

@@ -14,16 +14,16 @@ hkl=(#hkl_value#)
 uvw=(#uvw_value#)
 
 slip_suffix=#slip_suffix_value#
-mode=#mode_value#
+modes_plane=#modes_plane_value#
 
 suffix=${hkl[0]}${hkl[1]}${hkl[2]}_${uvw[0]}${uvw[1]}${uvw[2]}
 
 inp_folder=inp_files_${suffix}
-in_folder=/u/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/${slip_suffix}
+in_folder=/u/tezeghdanti/3D_Model_Crystal_Plasticity/Yield_Surface_For_Slip_Planes/${inp_folder}/${slip_suffix}
 
-cat $PBS_NODEFILE > ${in_folder}/node_${slip_suffix}_${mode}_${PBS_JOBID}
+cat $PBS_NODEFILE > ${in_folder}/node_${slip_suffix}_${modes_plane}_${PBS_JOBID}
 
-out_folder_gnode=/data6/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/${slip_suffix}
+out_folder_gnode=/data6/tezeghdanti/3D_Model_Crystal_Plasticity/Yield_Surface_For_Slip_Planes/${inp_folder}/${slip_suffix}
 
 #today_dir=$(date +%F)
 temp_folder=/usrtmp/tezeghdanti/${inp_folder}
@@ -38,7 +38,7 @@ cd $temp_folder/${slip_suffix}
 
 ####source ~zebulon/Z8.7/do_config.sh
 
-JobName=$(sed -n 1p EP_job_details_${mode}.txt)
+JobName=$(sed -n 1p Star_init_job_details_${modes_plane}.txt)
 
 NewJobName="${JobName}_${slip_suffix}.inp"
 

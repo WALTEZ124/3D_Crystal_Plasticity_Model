@@ -2,32 +2,28 @@
 
 # File for transfer to and from cluster local disk
 
-# change in and out folder only
-
-# folder is deleted on cluster after end
-
-#######PBS -l nodes=1:ppn=4:NODE59
 #PBS -l nodes=1:ppn=12
-##### PBS -l nodes=6:ppn=16
 #PBS -l walltime=20:00:00
 #PBS -V
-#PBS -l vmem=30gb
+#PBS -l vmem=50gb
 ########PBS -l software=abaqus:12
 #PBS -k eo
 
-hkl=(1 1 0)
-uvw=(0 0 1)
 
-mode=I
+hkl=(#hkl_value#)
+uvw=(#uvw_value#)
+
+slip_suffix=#slip_suffix_value#
+modes_plane=#modes_plane_value#
 
 suffix=${hkl[0]}${hkl[1]}${hkl[2]}_${uvw[0]}${uvw[1]}${uvw[2]}
 
 inp_folder=inp_files_${suffix}
-in_folder=/u/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/Elastic
+in_folder=/u/tezeghdanti/3D_Model_Crystal_Plasticity/Yield_Surface_For_Slip_Planes/${inp_folder}/${slip_suffix}
 
-cat $PBS_NODEFILE > ${in_folder}/node_EL_${mode}_${PBS_JOBID}
+cat $PBS_NODEFILE > ${in_folder}/node_${slip_suffix}_${modes_plane}_${PBS_JOBID}
 
-out_folder_gnode=/data6/tezeghdanti/3D_Model_Crystal_Plasticity/Reference_Fields_For_Slip_Planes/${inp_folder}/Elastic
+out_folder_gnode=/data6/tezeghdanti/3D_Model_Crystal_Plasticity/Yield_Surface_For_Slip_Planes/${inp_folder}/${slip_suffix}
 
 #today_dir=$(date +%F)
 temp_folder=/usrtmp/tezeghdanti/${inp_folder}
@@ -38,13 +34,13 @@ mkdir -p ${temp_folder}
 
 cp -r $in_folder  $temp_folder/
 
-cd $temp_folder/Elastic
+cd $temp_folder/${slip_suffix}
 
 ####source ~zebulon/Z8.7/do_config.sh
 
-JobName=$(sed -n 1p EL_job_details_${mode}.txt)
+JobName=$(sed -n 1p Star_init_job_details_${modes_plane}.txt)
 
-NewJobName="${JobName}.inp"
+NewJobName="${JobName}_${slip_suffix}.inp"
 
 source /u/gosselet/Z8.6/do_config.sh
 
@@ -54,8 +50,8 @@ echo "#########################Resync to origin################"
 
 mkdir -p $out_folder_gnode
 
-rsync -rtv $temp_folder/Elastic/ $out_folder_gnode/
+rsync -rtv $temp_folder/${slip_suffix}/ $out_folder_gnode/
 
-rm -r $temp_folder/Elastic
+rm -r $temp_folder/${slip_suffix}
 
 #scp -r $out_folder_gnode/${inp_folder} $ou_folder_local/

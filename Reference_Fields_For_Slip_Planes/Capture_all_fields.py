@@ -21,8 +21,8 @@ class Container(object):
     def __init__(self):
         pass
 
-hkl = [1,1,1]
-uvw = [-1,1,0]
+hkl = [0,1,0]
+uvw = [1,0,0]
 
 Shkl = "%d%d%d" % (hkl[0], hkl[1], hkl[2])
 Suvw = "%d%d%d" % (uvw[0], uvw[1], uvw[2])
@@ -99,6 +99,7 @@ for slip_suffix in slip_systems_list :
 	session.viewports['Viewport: 1'].setValues(origin=(0.0, -208.856262207031),width=204.951156616211, height=277.065002441406)
 	session.viewports['Viewport: 2'].setValues(origin=(204.951156616211,-208.856262207031), width=204.951156616211, height=277.065002441406)
 	session.viewports['Viewport: 3'].setValues(origin=(409.902313232422, -208.856262207031), width=204.951156616211, height=277.065002441406)
+	'''
 	### Von Mises
 	session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(variableLabel='S', outputPosition=INTEGRATION_POINT, refinement=(INVARIANT, 'Mises'), )
 	session.viewports['Viewport: 2'].odbDisplay.setPrimaryVariable(variableLabel='S', outputPosition=INTEGRATION_POINT, refinement=(INVARIANT, 'Mises'), )
@@ -109,11 +110,18 @@ for slip_suffix in slip_systems_list :
 	session.viewports['Viewport: 2'].odbDisplay.setPrimaryVariable(variableLabel='E', outputPosition=INTEGRATION_POINT, refinement=(INVARIANT, 'Max. Principal'), )
 	session.viewports['Viewport: 3'].odbDisplay.setPrimaryVariable(variableLabel='E', outputPosition=INTEGRATION_POINT, refinement=(INVARIANT, 'Max. Principal'), )
 	session.printToFile(fileName=os.path.join(captureSrc, "E_Max_Prple_%s" % (JobName_I) ), format=PNG, canvasObjects=(session.viewports['Viewport: 3'], session.viewports['Viewport: 2'], session.viewports['Viewport: 1']))
+	'''
+	### gama ev	
+	session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(variableLabel='SDV7', outputPosition=INTEGRATION_POINT, )
+	session.viewports['Viewport: 2'].odbDisplay.setPrimaryVariable(variableLabel='SDV7', outputPosition=INTEGRATION_POINT, )
+	session.viewports['Viewport: 3'].odbDisplay.setPrimaryVariable(variableLabel='SDV7', outputPosition=INTEGRATION_POINT, )
+	session.printToFile(fileName=os.path.join(captureSrc, "Gama_EV_%s" % (JobName_I) ), format=PNG, canvasObjects=(session.viewports['Viewport: 3'], session.viewports['Viewport: 2'], session.viewports['Viewport: 1']))
+	'''
 	### Cumulated plastic sliding	
 	session.viewports['Viewport: 1'].odbDisplay.setPrimaryVariable(variableLabel='SDV14', outputPosition=INTEGRATION_POINT, )
 	session.viewports['Viewport: 2'].odbDisplay.setPrimaryVariable(variableLabel='SDV14', outputPosition=INTEGRATION_POINT, )
 	session.viewports['Viewport: 3'].odbDisplay.setPrimaryVariable(variableLabel='SDV14', outputPosition=INTEGRATION_POINT, )
-	session.printToFile(fileName=os.path.join(captureSrc, "EV1_Cum_%s" % (JobName_I) ), format=PNG, canvasObjects=(session.viewports['Viewport: 3'], session.viewports['Viewport: 2'], session.viewports['Viewport: 1']))
+	session.printToFile(fileName=os.path.join(captureSrc, "EV1_Cum_%s" % (JobName_I) ), format=PNG, canvasObjects=(session.viewports['Viewport: 3'], session.viewports['Viewport: 2'], session.viewports['Viewport: 1']))	
 	### Cumulated plastic sliding LOG	
 	session.viewports['Viewport: 1'].makeCurrent()
 	session.viewports['Viewport: 1'].odbDisplay.contourOptions.setValues(contourType=LINE, numIntervals=13, intervalLineAttributes=((SOLID, THICK), 
@@ -137,6 +145,7 @@ for slip_suffix in slip_systems_list :
 			(SOLID, THICK), (SOLID, THICK), (SOLID, THICK), (SOLID, THICK), (SOLID, THICK), (SOLID, THICK), (SOLID, 
     			THICK)), maxAutoCompute=ON, minAutoCompute=OFF, minValue=0.0001, intervalType=LOG)
 	session.printToFile(fileName=os.path.join(captureSrc, "EV1_Cum_LOG_%s" % (JobName_I) ), format=PNG, canvasObjects=(session.viewports['Viewport: 3'], session.viewports['Viewport: 2'], session.viewports['Viewport: 1']))
+	'''
 	o1.close()
 	o2.close()
 	o3.close()

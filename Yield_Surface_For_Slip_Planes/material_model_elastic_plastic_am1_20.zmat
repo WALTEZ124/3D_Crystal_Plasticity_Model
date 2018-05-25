@@ -6,7 +6,7 @@
    y1111 296000.0
    y1122 204000.0
    y1212 125000.0
-**potential slip (1. 1. 1.) (-1. 0. 1.)
+ **potential slip (1. 1. 1.) (-1. 0. 1.)
 %%%%%%   Parameters from Hanriot 1993 at 20°
  *flow norton
    K         90.0
