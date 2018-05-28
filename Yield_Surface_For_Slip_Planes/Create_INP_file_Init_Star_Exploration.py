@@ -103,7 +103,9 @@ KRadius  = 8.
 
 os.system('echo Write INP for plane I-II' )
 
-init_prop_angle = np.arctan(KI_Center/KII_Center)
+
+init_prop_angle = np.arccos(KII_Center/sqrt(KI_Center**2+KII_Center**2) )
+
 KI_max  = KI_Center  + stab_rad * np.sin( init_prop_angle) 
 KII_max = KII_Center + stab_rad * np.cos( init_prop_angle) 
 
@@ -137,7 +139,8 @@ file2.close()
 
 os.system('echo Write INP for plane I-III' )
 
-init_prop_angle = np.arctan(KI_Center/KIII_Center)
+
+init_prop_angle = np.arccos(KIII_Center/sqrt(KI_Center**2+KIII_Center**2) )
 
 KI_max   = KI_Center  + stab_rad * np.sin( init_prop_angle) 
 KIII_max = KIII_Center + stab_rad *np.cos( init_prop_angle) 
@@ -170,7 +173,7 @@ file2.close()
 
 os.system('echo Write INP for plane II-III' )
 
-init_prop_angle = np.arctan(KII_Center/KIII_Center)
+init_prop_angle = np.arccos(KIII_Center/sqrt(KII_Center**2+KIII_Center**2) )
 
 KII_max  = KII_Center  + stab_rad * np.sin( init_prop_angle) 
 KIII_max = KIII_Center + stab_rad * np.cos( init_prop_angle) 
