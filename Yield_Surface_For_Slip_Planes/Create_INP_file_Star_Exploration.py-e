@@ -35,7 +35,7 @@ elif elastic.eType =='orthotropic' :
 	suffix = 'hkl_%s_uvw_%s' %(Shkl, Suvw)
 
 
-slip_suffix = 'b5'
+slip_suffix = b5
 
 odbSrc = os.path.join(odbDir , 'src_Odb_%s_octahedral' % (suffix ),'Yield_Surface',slip_suffix)
 if not os.path.exists(odbSrc):

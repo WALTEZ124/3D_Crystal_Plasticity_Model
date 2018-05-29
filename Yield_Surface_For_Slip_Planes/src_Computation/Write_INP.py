@@ -124,3 +124,17 @@ def Create_INP_Sec_Loading(mdb, Model , OldJobName, test, job, Param, elastic):
 	mdb.jobs[NewJobName].writeInput()
 	os.system('echo inp file %s Successfully written'  % (NewJobName))
 	return NewJobName, NewJobDescrip
+
+
+
+def generate_init_job_name(test, suffix):
+	name          = test.get('name')		 #: EL_Rand, EL_Norm, EP	
+	loading_type  = test.get('loading_type')         #: Loading type: imposed Force or Displacement
+	test_type     = test.get('test_type')            
+	KI_init_range   = test.get('KI_init_range')	         #: Range of KI nom
+	KII_init_range  = test.get('KII_init_range')	         #: Range of KII nom
+	KIII_init_range = test.get('KIII_init_range')	         #: Range of KII nom
+	JobName = '%s_%s_%s_Init_KI_%d_KII_%d_KIII_%d' %(name, test_type, suffix, KI_init_range[-1], KII_init_range[-1], KIII_init_range[-1] )
+	JobDescrip='%s plastic, cubic, %s, KI: %d , KII: %d , KIII: %d,loading type: %s' % ( test_type, suffix,  KI_init_range[-1], KII_init_range[-1], KIII_init_range[-1] , loading_type)
+	return JobName, JobDescrip
+
