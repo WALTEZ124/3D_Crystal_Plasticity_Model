@@ -90,9 +90,9 @@ plastic = Plastic( pType = 'none')
 
 # Test parameters:
 
-KI_Center   = 20. 
-KII_Center  = 0.
-KIII_Center = 0.
+KI_Center   = 30. 
+KII_Center  = 12.
+KIII_Center = 10.
 
 stab_rad = 4.
 KRadius  = 8.

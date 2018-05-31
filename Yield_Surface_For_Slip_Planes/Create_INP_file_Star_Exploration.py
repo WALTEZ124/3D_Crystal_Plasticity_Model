@@ -95,9 +95,9 @@ plastic = Plastic( pType = 'none')
 
 # Test parameters:
 
-KI_Center   = 20. 
-KII_Center  = 0.
-KIII_Center = 0.
+KI_Center   = 30. 
+KII_Center  = 12.
+KIII_Center = 10.
 
 stab_rad = 4.
 KRadius  = 8.
@@ -125,9 +125,9 @@ PL_Init_Test_I_II = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : load
 
 #Init_JobName_I_II, Init_Description_I_II     = Create_INP_Initial_Loading(mdb, 'Model-1' , PL_Init_Test_I_II , PL_Star_Job, Param, elastic)
 
-Init_JobName_I_II, Init_Description_I_II = generate_init_job_name(PL_Init_Test_I_II, suffix)
+Init_JobName, Init_Description_I_II = generate_init_job_name(PL_Init_Test_I_II, suffix)
 
-Init_JobName_I_II += slip_suffix
+Init_JobName_I_II = '%s_%s' %(Init_JobName, slip_suffix)
 
 Job_Star.I_II.Init_JobName     = Init_JobName_I_II
 Job_Star.I_II.Init_Description = Init_Description_I_II
@@ -190,9 +190,9 @@ PL_Init_Test_I_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loa
 
 #Init_JobName_I_III, Init_Description_I_III   = Create_INP_Initial_Loading(mdb, 'Model-1' , PL_Init_Test_I_III  , PL_Star_Job, Param, elastic)
 
-Init_JobName_I_III, Init_Description_I_III = generate_init_job_name(PL_Init_Test_I_III, suffix)
+Init_JobName, Init_Description_I_III = generate_init_job_name(PL_Init_Test_I_III, suffix)
 
-Init_JobName_I_III += slip_suffix
+Init_JobName_I_III = '%s_%s' %(Init_JobName, slip_suffix)
 
 Job_Star.I_III.Init_JobName     = Init_JobName_I_III
 Job_Star.I_III.Init_Description = Init_Description_I_III
@@ -254,9 +254,9 @@ PL_Init_Test_II_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : lo
 
 #Init_JobName_II_III, Init_Description_II_III = Create_INP_Initial_Loading(mdb, 'Model-1' , PL_Init_Test_II_III , PL_Star_Job, Param, elastic)
 
-Init_JobName_II_III, Init_Description_II_III = generate_init_job_name(PL_Init_Test_II_III, suffix)
+Init_JobName, Init_Description_II_III = generate_init_job_name(PL_Init_Test_II_III, suffix)
 
-Init_JobName_II_III += slip_suffix
+Init_JobName_II_III = '%s_%s' %(Init_JobName, slip_suffix)
 
 Job_Star.II_III.Init_JobName     = Init_JobName_II_III
 Job_Star.II_III.Init_Description = Init_Description_II_III

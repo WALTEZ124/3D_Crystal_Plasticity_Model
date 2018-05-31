@@ -79,6 +79,9 @@ Zpreload ${material_file_elastic} > "Zpreload_material_model_elastic_${used_mate
 slip_systems_list=("(1. 1. 1.) (-1. 0. 1.)" "(1. 1. 1.) (0. -1. 1.)" "(1. 1. 1.) (-1. 1. 0.)" "(1. -1. 1.) (-1. 0. 1.)" "(1. -1. 1.) (0. 1. 1.)" "(1. -1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (0. -1. 1.)" "(-1. 1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (1. 0. 1.)" "(1. 1. -1.) (-1. 1. 0.)" "(1. 1. -1.) (1. 0. 1.)" "(1. 1. -1.) (0. 1. 1.)")
 slip_systems_suffix=("b4" "b2" "b5" "d4" "d1" "d6" "a2" "a6" "a3" "c5" "c3" "c1")
 
+slip_systems_list=("(1. 1. 1.) (-1. 0. 1.)")
+slip_systems_suffix=("b4")
+
 for (( i=0; i<${#slip_systems_list[@]}; i++ ))
 do
 	slip_system=${slip_systems_list[$i]}
@@ -95,9 +98,9 @@ do
 	sed -i -e "s/slip_suffix =.*/slip_suffix = '${slip_suffix}'/" Create_INP_file_Star_Exploration.py
 	abaqus_6.11-2 cae noGUI=Create_INP_file_Star_Exploration.py
 	## Import JobName and sources' path from previous computation
-	JobName_I_II=$(sed -n 1p Star_init_job_details_I_II.txt)
-	JobName_I_III=$(sed -n 1p Star_init_job_details_I_III.txt)
-	JobName_II_III=$(sed -n 1p Star_init_job_details_II_III.txt)
+	JobName_I_II=$(sed -n 1p Star_job_details_I_II.txt)
+	JobName_I_III=$(sed -n 1p Star_job_details_I_III.txt)
+	JobName_II_III=$(sed -n 1p Star_job_details_II_III.txt)
 	for JobName in $JobName_I_II $JobName_I_III $JobName_II_III
 	do
 		NewJobName="${JobName}_${slip_suffix}.inp"
@@ -126,7 +129,7 @@ do
 	mv "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" ${inp_folder}/${slip_suffix}/
 	echo "Zpreload of ${slip_suffix} moved"
 	mv ${material_file_elastic_plastic} ${inp_folder}/${slip_suffix}/
-	cp Star_init_job_details* ${inp_folder}/${slip_suffix}/
+	cp Star_job_details* ${inp_folder}/${slip_suffix}/
 	cp ${material_file_elastic} ${inp_folder}/${slip_suffix}/
 done
 
