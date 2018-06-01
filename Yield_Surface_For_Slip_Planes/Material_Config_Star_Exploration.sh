@@ -79,8 +79,8 @@ Zpreload ${material_file_elastic} > "Zpreload_material_model_elastic_${used_mate
 slip_systems_list=("(1. 1. 1.) (-1. 0. 1.)" "(1. 1. 1.) (0. -1. 1.)" "(1. 1. 1.) (-1. 1. 0.)" "(1. -1. 1.) (-1. 0. 1.)" "(1. -1. 1.) (0. 1. 1.)" "(1. -1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (0. -1. 1.)" "(-1. 1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (1. 0. 1.)" "(1. 1. -1.) (-1. 1. 0.)" "(1. 1. -1.) (1. 0. 1.)" "(1. 1. -1.) (0. 1. 1.)")
 slip_systems_suffix=("b4" "b2" "b5" "d4" "d1" "d6" "a2" "a6" "a3" "c5" "c3" "c1")
 
-slip_systems_list=("(1. 1. 1.) (-1. 0. 1.)")
-slip_systems_suffix=("b4")
+slip_systems_list=("(1. 1. 1.) (0. -1. 1.)")
+slip_systems_suffix=("b2")
 
 for (( i=0; i<${#slip_systems_list[@]}; i++ ))
 do
@@ -98,33 +98,25 @@ do
 	sed -i -e "s/slip_suffix =.*/slip_suffix = '${slip_suffix}'/" Create_INP_file_Star_Exploration.py
 	abaqus_6.11-2 cae noGUI=Create_INP_file_Star_Exploration.py
 	## Import JobName and sources' path from previous computation
-	JobName_I_II=$(sed -n 1p Star_job_details_I_II.txt)
-	JobName_I_III=$(sed -n 1p Star_job_details_I_III.txt)
-	JobName_II_III=$(sed -n 1p Star_job_details_II_III.txt)
-	for JobName in $JobName_I_II $JobName_I_III $JobName_II_III
-	do
-		NewJobName="${JobName}_${slip_suffix}.inp"
-		cp "${JobName}.inp" $NewJobName
-		echo $NewJobName
-		## Insert the Zmat material configuration in the inp file
-		sed -i -e "s/material=Elastic-Plastic\s*$/material=${material_file_elastic_plastic}/" ${NewJobName}
-		sed -i -e "s/material=Elastic\s*$/material=${material_file_elastic}/" ${NewJobName}
-		#sed -i -e 's/material=Elastic-Rigid\s*$/material=material_model_elastic.zmat/' ${NewJobName}
-		materials_location=`grep -n '** MATERIALS' ${NewJobName} | awk -F ":" '{print $1}'`
-		insertion_line=$(($materials_location+2))
-		sed -i "${insertion_line}i **here" ${NewJobName}
-		begin="**here"
-		end="*Material, name=Elastic-Rigid"
-		sed -i -e "/$begin/,/$end/{/$begin/{p; r material_def_inp.inp
-			}; /$end/p; d}" ${NewJobName}
-		sed -i '/**here/d' ${NewJobName}
-		echo "Material defined and inserted into ${NewJobName}.inp"
-		## Launch Job on Zmat
-		# To configurate Zebulon with abaqus_6.11-2
-		#source ~zebulon/Z8.7/do_config.sh 
-		#Zmat cpus=12 memory=16gb $NewJobName
-		mv ${NewJobName} ${inp_folder}/${slip_suffix}/
-		echo "file moved"
+	for job_file_name in Star_job_details_I_II.txt Star_job_details_I_III.txt Star_job_details_II_III.txt
+		nbr_lines=$(wc -l < ${job_file_name})
+		for i in {2..${nbr_lines}}
+			JobName=$(sed -n ${i}p ${job_file_name})
+			NewJobName="${JobName}_${slip_suffix}.inp"
+			cp "${JobName}.inp" $NewJobName
+			echo $NewJobName
+			## Insert the Zmat material configuration in the inp file
+			match='*Restart, read,'
+			sed -i -e "/${match}/{ r material_def_inp.inp
+					} " ${NewJobName}
+			echo "Material defined and inserted into ${NewJobName}.inp"
+			## Launch Job on Zmat
+			# To configurate Zebulon with abaqus_6.11-2
+			#source ~zebulon/Z8.7/do_config.sh 
+			#Zmat cpus=12 memory=16gb $NewJobName
+			mv ${NewJobName} ${inp_folder}/${slip_suffix}/
+			echo "file moved"
+		done
 	done
 	mv "Zpreload_material_model_elastic_plastic_${used_material}_${slip_suffix}.txt" ${inp_folder}/${slip_suffix}/
 	echo "Zpreload of ${slip_suffix} moved"
