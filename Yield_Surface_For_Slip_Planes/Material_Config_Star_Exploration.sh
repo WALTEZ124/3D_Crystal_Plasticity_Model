@@ -15,35 +15,6 @@ hkl = [ ${hkl_list[0]}, ${hkl_list[1]}, ${hkl_list[2]}];
 uvw = [ ${uvw_list[0]}, ${uvw_list[1]}, ${uvw_list[2]}];
 hkl = np.asarray(hkl); 
 uvw = np.asarray(uvw);
-def miller_to_euler(hkl, uvw):	
-	qrs = np.cross(hkl, uvw) ;
-	Nhkl = np.linalg.norm(hkl) ;
-	Nuvw = np.linalg.norm(uvw) ;
-	Nqrs = np.linalg.norm(qrs) ;
-	g = np.array([[ uvw[0]/Nuvw,  qrs[0]/Nqrs, hkl[0]/Nhkl ],
-	                [ uvw[1]/Nuvw, qrs[1]/Nqrs, hkl[1]/Nhkl ],
-	                [ uvw[2]/Nuvw, qrs[2]/Nqrs, hkl[2]/Nhkl] ])     ;       
-	R = np.array([[1,0,0],[0,0,-1],[0,1,0]]);
-        g_prime = np.matmul(g, R )
-	if abs(g_prime[2][2]-1)<1e-6 :
-	        phi1 = np.arctan(g_prime[0][1]/g_prime[0][0])*180/np.pi ;
-	        psi  = 0.;
-	        phi2 = 0.;
-	else :
-	        phi1 = np.arctan(-g_prime[2][0]/g_prime[2][1])*180/np.pi;
-	        psi  = np.arccos(g_prime[2][2])*180/np.pi;
-	        phi2 = np.arctan(g_prime[0][2]/g_prime[1][2])*180/np.pi;
-	print('%f %f %f' % (phi1, psi, phi2));
-
-def miller_to_euler_1(hkl, uvw):	
-	h,k,l = hkl;
-	u, v, w = uvw;
-	Nhkl = np.linalg.norm(hkl) ;
-	Nuvw = np.linalg.norm(uvw) ;
-	psi = np.arccos(l/Nhkl)*180/np.pi;
-	phi2 = np.arccos(k/np.sqrt(h**2+k**2))*180/np.pi;
-	phi1 = np.arcsin(w*Nhkl/(Nuvw*np.sqrt(h**2+k**2)))*180/np.pi;
-	print('%f %f %f' % (phi1, psi, phi2));
 
 def miller_to_matrix(hkl, uvw):
 	qrs = np.cross(hkl, uvw) ;
@@ -79,8 +50,8 @@ Zpreload ${material_file_elastic} > "Zpreload_material_model_elastic_${used_mate
 slip_systems_list=("(1. 1. 1.) (-1. 0. 1.)" "(1. 1. 1.) (0. -1. 1.)" "(1. 1. 1.) (-1. 1. 0.)" "(1. -1. 1.) (-1. 0. 1.)" "(1. -1. 1.) (0. 1. 1.)" "(1. -1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (0. -1. 1.)" "(-1. 1. 1.) (1. 1. 0.)" "(-1. 1. 1.) (1. 0. 1.)" "(1. 1. -1.) (-1. 1. 0.)" "(1. 1. -1.) (1. 0. 1.)" "(1. 1. -1.) (0. 1. 1.)")
 slip_systems_suffix=("b4" "b2" "b5" "d4" "d1" "d6" "a2" "a6" "a3" "c5" "c3" "c1")
 
-slip_systems_list=("(1. 1. 1.) (0. -1. 1.)")
-slip_systems_suffix=("b2")
+#slip_systems_list=("(1. 1. 1.) (0. -1. 1.)")
+#slip_systems_suffix=("b2")
 
 for (( i=0; i<${#slip_systems_list[@]}; i++ ))
 do
@@ -99,9 +70,13 @@ do
 	abaqus_6.11-2 cae noGUI=Create_INP_file_Star_Exploration.py
 	## Import JobName and sources' path from previous computation
 	for job_file_name in Star_job_details_I_II.txt Star_job_details_I_III.txt Star_job_details_II_III.txt
+	do
 		nbr_lines=$(wc -l < ${job_file_name})
-		for i in {2..${nbr_lines}}
-			JobName=$(sed -n ${i}p ${job_file_name})
+		echo ${job_file_name}
+		echo ${nbr_lines}
+		for ((j=2;j<=${nbr_lines};j++))
+		do
+			JobName=$(sed -n ${j}p ${job_file_name})
 			NewJobName="${JobName}_${slip_suffix}.inp"
 			cp "${JobName}.inp" $NewJobName
 			echo $NewJobName
@@ -109,7 +84,7 @@ do
 			match='*Restart, read,'
 			sed -i -e "/${match}/{ r material_def_inp.inp
 					} " ${NewJobName}
-			echo "Material defined and inserted into ${NewJobName}.inp"
+			echo "Material defined and inserted into ${NewJobName}"
 			## Launch Job on Zmat
 			# To configurate Zebulon with abaqus_6.11-2
 			#source ~zebulon/Z8.7/do_config.sh 

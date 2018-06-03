@@ -153,6 +153,7 @@ for sec_prop_angle in Explored_Directions :
 	KIII_sec =  0.
 	PL_Sec_Test_I_II = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
 				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
+	Init_JobName_I_II = 'fake_odb_file'
 	Sec_JobName_I_II, Sec_Description_I_II = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_II , PL_Sec_Test_I_II, PL_Star_Job, Param, elastic)
 	file2.write('%s\n' % Sec_JobName_I_II ) 
 	Sec_JobNames_list += [Sec_JobName_I_II]
@@ -217,6 +218,7 @@ for sec_prop_angle in Explored_Directions :
 	KIII_sec =  KIII_Center + KRadius * np.cos( sec_prop_angle*np.pi/180 ) 
 	PL_Sec_Test_I_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
 				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
+	Init_JobName_I_III = 'fake_odb_file'	
 	Sec_JobName_I_III, Sec_Description_I_III = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_III , PL_Sec_Test_I_III, PL_Star_Job, Param, elastic)
 	file2.write('%s\n' % Sec_JobName_I_III ) 
 	Sec_JobNames_list += [Sec_JobName_I_III]
@@ -281,6 +283,7 @@ for sec_prop_angle in Explored_Directions :
 	KIII_sec =  KIII_Center + KRadius * np.cos( sec_prop_angle*np.pi/180 ) 
 	PL_Sec_Test_II_III = { 'name' : 'EP', 'test_type' : 'Star', 'loading_type' : loading_type, 
 				'KI_sec' : KI_sec , 'KII_sec' : KII_sec, 'KIII_sec' : KIII_sec, 'NLGEOM': False }
+	Init_JobName_II_III = 'fake_odb_file'
 	Sec_JobName_II_III, Sec_Description_II_III = Create_INP_Sec_Loading( mdb, 'Model-1-Restart', Init_JobName_I_III , PL_Sec_Test_II_III, PL_Star_Job, Param, elastic)
 	file2.write('%s\n' % Sec_JobName_II_III ) 
 	Sec_JobNames_list += [Sec_JobName_II_III]
