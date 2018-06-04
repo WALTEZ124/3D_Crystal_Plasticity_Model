@@ -49,13 +49,13 @@ for slip_suffix in slip_systems_list :
     #    Import Reference fields
     #-------------------------------------------------------------------------------
     Uref_PL = Container()
-    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_I_%s_%s_%s.p' % (mode_order, suffix, slip_suffix ) ),'rb')
+    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_I_%s_%s_%s_prot2.p' % (mode_order, suffix, slip_suffix ) ),'rb')
     Uref_PL.I = pickle.load(file2 )
     file2.close()
-    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_II_%s_%s_%s.p' % (mode_order, suffix, slip_suffix) ),'rb')
+    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_II_%s_%s_%s_prot2.p' % (mode_order, suffix, slip_suffix) ),'rb')
     Uref_PL.II = pickle.load(file2)
     file2.close()
-    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_III_%s_%s_%s.p' % (mode_order, suffix, slip_suffix) ),'rb')
+    file2=open(os.path.join( codeSrc, 'src_Reference_Fields', 'Uref_PL_III_%s_%s_%s_prot2.p' % (mode_order, suffix, slip_suffix) ),'rb')
     Uref_PL.III = pickle.load(file2)
     file2.close()
     rad_min, rad_max = Uref_PL.I.Extraction_zone
@@ -63,6 +63,10 @@ for slip_suffix in slip_systems_list :
     Uref = pickle.load(file2 )
     file2.close() 
     Uref_EL = Uref.EL
+    os.system('echo slip system %s : reference fields successfully imported' % (slip_suffix ) )
+    #-------------------------------------------------------------------------------
+    #    Start fields extraction and projection
+    #-------------------------------------------------------------------------------
     for modes_plane in modes_plane_list :
         ResultsDir = os.path.join( 'Results',slip_suffix, modes_plane )
         if not os.path.exists(ResultsDir):

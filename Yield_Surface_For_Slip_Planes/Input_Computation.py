@@ -150,12 +150,3 @@ class Plastic():
 			print ('Error in Plasticity Type')
 
 
-#---------------------------------------------------------------------------------
-#          Call functions
-#---------------------------------------------------------------------------------
-
-srcFile = os.path.join(compSrc,'Write_INP.py')
-execfile(srcFile)
-
-srcFile = os.path.join(compSrc,'SIF_To_Force.py')
-execfile(srcFile)
